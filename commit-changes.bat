@@ -41,9 +41,9 @@ git commit -m "refactor: 重组项目结构以适配 Vercel 部署
 echo 提交完成！
 echo.
 echo [步骤 4/4] 推送到远程仓库...
-echo 即将推送到: origin master
+echo 即将推送到: origin main
 pause
-git push origin master
+git push origin main
 echo.
 echo ========================================
 echo 提交成功！
