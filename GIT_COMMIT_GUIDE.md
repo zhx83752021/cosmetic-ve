@@ -2,7 +2,7 @@
 
 ## 📦 当前状态
 
-你的 Git 仓库：https://github.com/zhx83752021/cosmetic-vue.git
+你的 Git 仓库：https://github.com/zhx83752021/cosmetic-ve.git
 
 ## ✅ 需要提交的重要文件
 
@@ -194,7 +194,7 @@ apps/
 
 ## 🔗 相关资源
 
-- **GitHub 仓库**: https://github.com/zhx83752021/cosmetic-vue.git
+- **GitHub 仓库**: https://github.com/zhx83752021/cosmetic-ve.git
 - **部署指南**: README_DEPLOYMENT.md
 - **快速开始**: QUICK_START.md
 

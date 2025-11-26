@@ -44,7 +44,7 @@ git commit -m "chore: 移除已迁移的旧项目文件夹
 
 echo.
 echo 推送到远程...
-git push origin main
+git push origin master
 
 echo.
 echo ========================================

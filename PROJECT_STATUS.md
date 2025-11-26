@@ -86,7 +86,7 @@ apps/web/
 
 ## 🚀 Git 仓库信息
 
-**仓库地址：** https://github.com/zhx83752021/cosmetic-vue.git
+**仓库地址：** https://github.com/zhx83752021/cosmetic-ve.git
 
 ### 需要提交的内容
 
