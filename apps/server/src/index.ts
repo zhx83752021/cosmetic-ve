@@ -12,35 +12,53 @@ const app: express.Express = express()
 const PORT = process.env.PORT || 3001
 // 安全中间件
 app.use(helmet())
-// CORS配置
-const allowedOrigins =
-  process.env.NODE_ENV === 'production'
-    ? process.env.CORS_ORIGINS
-      ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-      : ['https://hi-ultra.com', 'https://www.hi-ultra.com', 'https://cosmetic-ve.vercel.app']
-    : ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174']
+// CORS配置 - 智能检测环境
+const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1'
+const isDevelopment = !isProduction
+
+// 生产环境白名单
+const productionOrigins = [
+  'https://hi-ultra.com',
+  'https://www.hi-ultra.com',
+  'https://cosmetic-ve.vercel.app',
+  'https://cosmetic-ve-git-main-zhx83752021s-projects.vercel.app', // Vercel Git 分支
+]
+
+// 如果设置了自定义 CORS_ORIGINS，添加到白名单
+if (process.env.CORS_ORIGINS) {
+  productionOrigins.push(...process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()))
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
       // 允许没有 origin 的请求（如 Postman、服务器端请求）
       if (!origin) return callback(null, true)
+
       // 开发环境：允许所有 localhost
-      if (process.env.NODE_ENV !== 'production' && origin.startsWith('http://localhost:')) {
+      if (isDevelopment && origin.startsWith('http://localhost:')) {
         return callback(null, true)
       }
-      // 生产环境：允许 Vercel 预览和生产域名
-      if (process.env.NODE_ENV === 'production' && origin.endsWith('.vercel.app')) {
+
+      // 生产环境：允许所有 Vercel 域名
+      if (isProduction && origin.endsWith('.vercel.app')) {
         return callback(null, true)
       }
-      // 检查白名单
-      if (allowedOrigins.includes(origin)) {
+
+      // 检查生产环境白名单
+      if (productionOrigins.includes(origin)) {
         return callback(null, true)
       }
+
+      // 记录被拒绝的来源以便调试
+      console.warn(`❌ CORS blocked origin: ${origin}`)
       callback(new Error(`CORS not allowed for origin: ${origin}`))
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['Content-Length', 'X-Request-Id'],
+    maxAge: 86400, // 预检请求缓存 24 小时
   })
 )
 // 请求体解析
