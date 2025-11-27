@@ -202,8 +202,17 @@ const getList = async () => {
       couponList.value = res.data.data.items
       total.value = res.data.data.pagination.total
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('获取优惠券列表失败:', error)
+    // 只在非网络错误时显示错误提示
+    if (error?.response && error.response.status !== 0) {
+      ElMessage.error('获取优惠券列表失败')
+    } else {
+      // 网络错误或后端未启动，使用空数据
+      console.warn('后端服务未启动，使用空数据')
+      couponList.value = []
+      total.value = 0
+    }
   } finally {
     loading.value = false
   }

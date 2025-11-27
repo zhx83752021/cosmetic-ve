@@ -17,9 +17,13 @@
         router
         class="sidebar-menu"
       >
-        <template v-for="route in menuRoutes" :key="route.path">
+        <template v-for="route in menuRoutes">
           <!-- 单层菜单 -->
-          <el-menu-item v-if="!route.children || route.children.length === 0" :index="route.path">
+          <el-menu-item
+            v-if="!route.children || route.children.length === 0"
+            :key="`item-${route.path}`"
+            :index="route.path"
+          >
             <el-icon v-if="route.meta?.icon">
               <component :is="route.meta.icon" />
             </el-icon>
@@ -27,7 +31,7 @@
           </el-menu-item>
 
           <!-- 多层菜单 -->
-          <el-sub-menu v-else :index="route.path">
+          <el-sub-menu v-else :key="`submenu-${route.path}`" :index="route.path">
             <template #title>
               <el-icon v-if="route.meta?.icon">
                 <component :is="route.meta.icon" />
@@ -50,7 +54,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, type RouteRecordRaw } from 'vue-router'
 
 interface Props {
   collapsed?: boolean
@@ -72,12 +76,28 @@ const activeMenu = computed(() => {
 // 过滤需要显示的菜单路由
 const menuRoutes = computed(() => {
   const routes = router.getRoutes()
-  return routes.filter(routeItem => {
-    // 过滤掉隐藏的路由和登录页
+  return routes.filter((routeItem: RouteRecordRaw) => {
+    // 只显示管理后台的一级菜单路由
+    // 1. 必须是 admin 模块的路由
+    // 2. 路径必须以 /admin 开头
+    // 3. 不能是隐藏的路由
+    // 4. 不能是登录页
+    // 5. 路径格式必须是 /admin 或 /admin/xxx（不能是 /admin/xxx/yyy）
+    const isAdminModule = routeItem.meta?.module === 'admin'
+    const isNotHidden = !routeItem.meta?.hidden
+    const isNotLogin = routeItem.path !== '/admin/login'
+
+    // 检查路径层级：只显示 /admin 或 /admin/xxx 格式的路由
+    // 排除子路由如 /admin/products/list
+    const pathParts = routeItem.path.split('/').filter((p: string) => p)
+    const isTopLevel = pathParts.length <= 2 // ['admin'] 或 ['admin', 'products']
+
     return (
-      !routeItem.meta?.hidden &&
-      routeItem.path !== '/login' &&
-      routeItem.path !== '/:pathMatch(.*)*'
+      isAdminModule &&
+      isNotHidden &&
+      isNotLogin &&
+      isTopLevel &&
+      routeItem.path.startsWith('/admin')
     )
   })
 })
