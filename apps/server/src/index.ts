@@ -16,20 +16,32 @@ const PORT = process.env.PORT || 3001
 // 安全中间件
 app.use(helmet())
 
-// CORS配置 - 开发环境允许所有本地端口
+// CORS配置
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? process.env.CORS_ORIGINS
+      ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
+      : ['https://hi-ultra.com', 'https://www.hi-ultra.com', 'https://cosmetic-ve.vercel.app']
+    : ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:5174']
+
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === 'production'
-        ? ['https://hi-ultra.com', 'https://www.hi-ultra.com', 'https://cosmetic-ve.vercel.app']
-        : (origin, callback) => {
-            // 开发环境允许所有 localhost 请求
-            if (!origin || origin.startsWith('http://localhost:')) {
-              callback(null, true)
-            } else {
-              callback(new Error('Not allowed by CORS'))
-            }
-          },
+    origin: (origin, callback) => {
+      // 允许没有 origin 的请求（如 Postman、服务器端请求）
+      if (!origin) return callback(null, true)
+
+      // 开发环境：允许所有 localhost
+      if (process.env.NODE_ENV !== 'production' && origin.startsWith('http://localhost:')) {
+        return callback(null, true)
+      }
+
+      // 生产环境：检查白名单
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+
+      callback(new Error(`CORS not allowed for origin: ${origin}`))
+    },
     credentials: true,
   })
 )
