@@ -21,7 +21,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === 'production'
-        ? ['https://yourdomain.com', 'https://admin.yourdomain.com']
+        ? ['https://hi-ultra.com', 'https://www.hi-ultra.com', 'https://cosmetic-ve.vercel.app']
         : (origin, callback) => {
             // 开发环境允许所有 localhost 请求
             if (!origin || origin.startsWith('http://localhost:')) {
