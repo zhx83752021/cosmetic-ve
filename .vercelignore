@@ -1,0 +1,62 @@
+# 依赖
+node_modules
+**/node_modules
+
+# 构建产物
+dist
+**/dist
+.next
+build
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 编辑器
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量（本地）
+.env.local
+.env.*.local
+
+# 测试覆盖率
+coverage
+.nyc_output
+
+# 临时文件
+*.tmp
+*.temp
+.cache
+
+# Git
+.git
+.gitignore
+
+# 文档
+docs
+*.md
+!README.md
+
+# 服务端代码（仅部署前端）
+apps/server
+
+# 批处理脚本
+*.bat
+*.sh
+
+# TypeScript 构建信息
+*.tsbuildinfo
+
+# Husky
+.husky
