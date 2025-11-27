@@ -5,6 +5,7 @@ import orderRoutes from './order.routes.js'
 import userRoutes from './user.routes.js'
 import adminRoutes from './admin.routes.js'
 import articleRoutes from './article.routes.js'
+import diagnosticRoutes from './diagnostic.routes.js'
 
 const router: RouterType = Router()
 
@@ -15,6 +16,7 @@ router.use('/orders', orderRoutes)
 router.use('/users', userRoutes)
 router.use('/admin', adminRoutes)
 router.use('/articles', articleRoutes)
+router.use('/diagnostic', diagnosticRoutes)
 
 // 测试路由
 router.get('/test', (req, res) => {
