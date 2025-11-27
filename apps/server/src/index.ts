@@ -65,10 +65,12 @@ app.use((req, res) => {
 // 错误处理
 app.use(errorHandler)
 
-// 启动服务器
-app.listen(PORT, () => {
-  console.log(`✅ 服务器运行在 http://localhost:${PORT}`)
-  console.log(`📝 环境: ${process.env.NODE_ENV || 'development'}`)
-})
+// 启动服务器（仅在非 Vercel 环境）
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`✅ 服务器运行在 http://localhost:${PORT}`)
+    console.log(`📝 环境: ${process.env.NODE_ENV || 'development'}`)
+  })
+}
 
 export default app

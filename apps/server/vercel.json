@@ -3,14 +3,14 @@
   "name": "cosmetics-api",
   "builds": [
     {
-      "src": "dist/index.js",
+      "src": "api/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/index.js"
+      "dest": "/api/index.js"
     }
   ],
   "env": {
