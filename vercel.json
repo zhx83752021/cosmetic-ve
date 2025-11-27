@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install && cd apps/web && pnpm run build",
+  "buildCommand": "turbo run build --filter=@cosmetics/web",
   "outputDirectory": "apps/web/dist",
   "installCommand": "npm install -g pnpm@8.12.1 && pnpm install",
   "framework": null,
