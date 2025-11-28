@@ -58,3 +58,13 @@ prisma/migrations
 
 # Vercel
 .vercel
+
+# Debugging and troubleshooting files
+*FIX*.md
+*URGENT*.md
+*QUICK*.md
+*check*.bat
+*test*.bat
+*test*.ps1
+*diagnose*.ps1
+force-redeploy.md
