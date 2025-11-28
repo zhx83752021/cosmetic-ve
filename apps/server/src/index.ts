@@ -15,42 +15,34 @@ app.use(helmet())
 // CORS配置 - 智能检测环境
 const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1'
 const isDevelopment = !isProduction
-
 // 生产环境白名单
 const productionOrigins = [
   'https://hi-ultra.com',
   'https://www.hi-ultra.com',
-  'https://zxs.hi-ultra.com', // 前端生产域名
   'https://cosmetic-ve.vercel.app',
   'https://cosmetic-ve-git-main-zhx83752021s-projects.vercel.app', // Vercel Git 分支
 ]
-
 // 如果设置了自定义 CORS_ORIGINS，添加到白名单
 if (process.env.CORS_ORIGINS) {
   productionOrigins.push(...process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()))
 }
-
 app.use(
   cors({
     origin: (origin, callback) => {
       // 允许没有 origin 的请求（如 Postman、服务器端请求）
       if (!origin) return callback(null, true)
-
       // 开发环境：允许所有 localhost
       if (isDevelopment && origin.startsWith('http://localhost:')) {
         return callback(null, true)
       }
-
       // 生产环境：允许所有 Vercel 域名
       if (isProduction && origin.endsWith('.vercel.app')) {
         return callback(null, true)
       }
-
       // 检查生产环境白名单
       if (productionOrigins.includes(origin)) {
         return callback(null, true)
       }
-
       // 记录被拒绝的来源以便调试
       console.warn(`❌ CORS blocked origin: ${origin}`)
       callback(new Error(`CORS not allowed for origin: ${origin}`))
