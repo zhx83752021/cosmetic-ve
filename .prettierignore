@@ -1,0 +1,11 @@
+dist
+node_modules
+.cache
+.next
+.nuxt
+.output
+.vercel
+coverage
+*.min.js
+*.min.css
+pnpm-lock.yaml
