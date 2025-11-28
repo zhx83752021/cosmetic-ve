@@ -20,6 +20,7 @@ const isDevelopment = !isProduction
 const productionOrigins = [
   'https://hi-ultra.com',
   'https://www.hi-ultra.com',
+  'https://zxs.hi-ultra.com', // 前端生产域名
   'https://cosmetic-ve.vercel.app',
   'https://cosmetic-ve-git-main-zhx83752021s-projects.vercel.app', // Vercel Git 分支
 ]
