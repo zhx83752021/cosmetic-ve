@@ -89,7 +89,7 @@ const limiter = rateLimit({
 app.use('/api/', limiter)
 
 // 健康检查处理函数
-const healthCheck = (req, res) => {
+const healthCheck = (req: express.Request, res: express.Response) => {
   const hasDatabase = !!process.env.DATABASE_URL
   const hasJwtSecret = !!process.env.JWT_SECRET
 
