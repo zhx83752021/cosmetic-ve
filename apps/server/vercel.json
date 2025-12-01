@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "buildCommand": "prisma generate && tsc && echo 'Build completed' && ls -la dist/",
-  "functions": {
-    "api/*.js": {
-      "includeFiles": "dist/**"
-    }
-  }
-}

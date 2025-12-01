@@ -26,49 +26,55 @@ const productionOrigins = [
 if (process.env.CORS_ORIGINS) {
   productionOrigins.push(...process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()))
 }
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      console.log(
-        `🔍 CORS检查 - Origin: ${origin}, 环境: ${isProduction ? 'production' : 'development'}`
-      )
+// CORS 配置
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    console.log(
+      `🔍 CORS检查 - Origin: ${origin}, 环境: ${isProduction ? 'production' : 'development'}`
+    )
 
-      // 允许没有 origin 的请求（如 Postman、服务器端请求）
-      if (!origin) {
-        console.log('✅ 允许无origin请求')
-        return callback(null, true)
-      }
+    // 允许没有 origin 的请求（如 Postman、服务器端请求）
+    if (!origin) {
+      console.log('✅ 允许无origin请求')
+      return callback(null, true)
+    }
 
-      // 开发环境：允许所有 localhost
-      if (isDevelopment && origin.startsWith('http://localhost:')) {
-        console.log('✅ 开发环境 - 允许localhost')
-        return callback(null, true)
-      }
+    // 开发环境：允许所有 localhost
+    if (isDevelopment && origin.startsWith('http://localhost:')) {
+      console.log('✅ 开发环境 - 允许localhost')
+      return callback(null, true)
+    }
 
-      // 生产环境：允许所有 Vercel 域名
-      if (isProduction && origin.endsWith('.vercel.app')) {
-        console.log('✅ 生产环境 - 允许Vercel域名')
-        return callback(null, true)
-      }
+    // 生产环境：允许所有 Vercel 域名
+    if (isProduction && origin.endsWith('.vercel.app')) {
+      console.log('✅ 生产环境 - 允许Vercel域名')
+      return callback(null, true)
+    }
 
-      // 检查生产环境白名单
-      if (productionOrigins.includes(origin)) {
-        console.log('✅ 白名单匹配成功')
-        return callback(null, true)
-      }
+    // 检查生产环境白名单
+    if (productionOrigins.includes(origin)) {
+      console.log('✅ 白名单匹配成功')
+      return callback(null, true)
+    }
 
-      // 记录被拒绝的来源以便调试
-      console.warn(`❌ CORS blocked origin: ${origin}`)
-      console.warn(`   白名单: ${JSON.stringify(productionOrigins)}`)
-      callback(new Error(`CORS not allowed for origin: ${origin}`))
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['Content-Length', 'X-Request-Id'],
-    maxAge: 86400, // 预检请求缓存 24 小时
-  })
-)
+    // 记录被拒绝的来源以便调试
+    console.warn(`❌ CORS blocked origin: ${origin}`)
+    console.warn(`   白名单: ${JSON.stringify(productionOrigins)}`)
+    callback(new Error(`CORS not allowed for origin: ${origin}`))
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Length', 'X-Request-Id'],
+  maxAge: 86400, // 预检请求缓存 24 小时
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+}
+
+app.use(cors(corsOptions))
+
+// 显式处理 OPTIONS 预检请求
+app.options('*', cors(corsOptions))
 // 请求体解析
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

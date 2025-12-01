@@ -1,11 +1,33 @@
 {
-  "buildCommand": "pnpm --filter @cosmetics/web run build",
-  "outputDirectory": "apps/web/dist",
+  "version": 2,
   "installCommand": "npm install -g pnpm@8.12.1 && pnpm install",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "apps/server/api/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["apps/server/dist/**", "apps/server/node_modules/**"]
+      }
+    },
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/apps/server/api/index.js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/apps/web/dist/index.html"
     }
   ]
 }
