@@ -2,11 +2,9 @@
 node_modules
 **/node_modules
 
-# 构建产物
-dist
-**/dist
-.next
-build
+# 构建产物（本地）- 这些会在 Vercel 构建时重新生成
+apps/*/dist
+public
 
 # 日志
 *.log
@@ -27,6 +25,7 @@ pnpm-debug.log*
 Thumbs.db
 
 # 环境变量（本地）
+.env
 .env.local
 .env.*.local
 
@@ -48,9 +47,6 @@ docs
 *.md
 !README.md
 
-# 服务端代码（仅部署前端）
-apps/server
-
 # 批处理脚本
 *.bat
 *.sh
@@ -60,3 +56,6 @@ apps/server
 
 # Husky
 .husky
+
+# API 目录（会在构建过程中生成）
+api
