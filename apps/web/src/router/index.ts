@@ -116,6 +116,7 @@ const adminRoutes: RouteRecordRaw[] = [
     path: '/admin',
     component: () => import('@admin/layout/index.vue'),
     redirect: '/admin/dashboard',
+    meta: { module: 'admin' },
     children: [
       {
         path: 'dashboard',
@@ -123,94 +124,83 @@ const adminRoutes: RouteRecordRaw[] = [
         component: () => import('@admin/views/Dashboard.vue'),
         meta: { title: '数据仪表盘', icon: 'DataAnalysis', module: 'admin' },
       },
-    ],
-  },
-  {
-    path: '/admin/products',
-    component: () => import('@admin/layout/index.vue'),
-    redirect: '/admin/products/list',
-    meta: { title: '商品管理', icon: 'Box', module: 'admin' },
-    children: [
       {
-        path: 'list',
-        name: 'AdminProductList',
-        component: () => import('@admin/views/products/List.vue'),
-        meta: { title: '商品列表', module: 'admin' },
+        path: 'products',
+        redirect: '/admin/products/list',
+        meta: { title: '商品管理', icon: 'Box', module: 'admin' },
+        children: [
+          {
+            path: 'list',
+            name: 'AdminProductList',
+            component: () => import('@admin/views/products/List.vue'),
+            meta: { title: '商品列表', module: 'admin' },
+          },
+          {
+            path: 'categories',
+            name: 'AdminProductCategories',
+            component: () => import('@admin/views/products/Categories.vue'),
+            meta: { title: '商品分类', module: 'admin' },
+          },
+        ],
       },
       {
-        path: 'categories',
-        name: 'AdminProductCategories',
-        component: () => import('@admin/views/products/Categories.vue'),
-        meta: { title: '商品分类', module: 'admin' },
-      },
-    ],
-  },
-  {
-    path: '/admin/orders',
-    component: () => import('@admin/layout/index.vue'),
-    redirect: '/admin/orders/list',
-    meta: { title: '订单管理', icon: 'ShoppingCart', module: 'admin' },
-    children: [
-      {
-        path: 'list',
-        name: 'AdminOrderList',
-        component: () => import('@admin/views/orders/List.vue'),
-        meta: { title: '订单列表', module: 'admin' },
-      },
-    ],
-  },
-  {
-    path: '/admin/users',
-    component: () => import('@admin/layout/index.vue'),
-    redirect: '/admin/users/list',
-    meta: { title: '用户管理', icon: 'User', module: 'admin' },
-    children: [
-      {
-        path: 'list',
-        name: 'AdminUserList',
-        component: () => import('@admin/views/users/List.vue'),
-        meta: { title: '用户列表', module: 'admin' },
-      },
-    ],
-  },
-  {
-    path: '/admin/marketing',
-    component: () => import('@admin/layout/index.vue'),
-    redirect: '/admin/marketing/coupons',
-    meta: { title: '营销管理', icon: 'Present', module: 'admin' },
-    children: [
-      {
-        path: 'coupons',
-        name: 'AdminCouponManagement',
-        component: () => import('@admin/views/marketing/Coupons.vue'),
-        meta: { title: '优惠券管理', module: 'admin' },
+        path: 'orders',
+        redirect: '/admin/orders/list',
+        meta: { title: '订单管理', icon: 'ShoppingCart', module: 'admin' },
+        children: [
+          {
+            path: 'list',
+            name: 'AdminOrderList',
+            component: () => import('@admin/views/orders/List.vue'),
+            meta: { title: '订单列表', module: 'admin' },
+          },
+        ],
       },
       {
-        path: 'activities',
-        name: 'AdminActivityManagement',
-        component: () => import('@admin/views/marketing/Activities.vue'),
-        meta: { title: '活动管理', module: 'admin' },
+        path: 'users',
+        redirect: '/admin/users/list',
+        meta: { title: '用户管理', icon: 'User', module: 'admin' },
+        children: [
+          {
+            path: 'list',
+            name: 'AdminUserList',
+            component: () => import('@admin/views/users/List.vue'),
+            meta: { title: '用户列表', module: 'admin' },
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: '/admin/content',
-    component: () => import('@admin/layout/index.vue'),
-    redirect: '/admin/content/articles',
-    meta: { title: '内容管理', icon: 'Document', module: 'admin' },
-    children: [
       {
-        path: 'articles',
-        name: 'AdminArticleManagement',
-        component: () => import('@admin/views/content/Articles.vue'),
-        meta: { title: '文章管理', module: 'admin' },
+        path: 'marketing',
+        redirect: '/admin/marketing/coupons',
+        meta: { title: '营销管理', icon: 'Present', module: 'admin' },
+        children: [
+          {
+            path: 'coupons',
+            name: 'AdminCouponManagement',
+            component: () => import('@admin/views/marketing/Coupons.vue'),
+            meta: { title: '优惠券管理', module: 'admin' },
+          },
+          {
+            path: 'activities',
+            name: 'AdminActivityManagement',
+            component: () => import('@admin/views/marketing/Activities.vue'),
+            meta: { title: '活动管理', module: 'admin' },
+          },
+        ],
       },
-    ],
-  },
-  {
-    path: '/admin',
-    component: () => import('@admin/layout/index.vue'),
-    children: [
+      {
+        path: 'content',
+        redirect: '/admin/content/articles',
+        meta: { title: '内容管理', icon: 'Document', module: 'admin' },
+        children: [
+          {
+            path: 'articles',
+            name: 'AdminArticleManagement',
+            component: () => import('@admin/views/content/Articles.vue'),
+            meta: { title: '文章管理', module: 'admin' },
+          },
+        ],
+      },
       {
         path: 'settings',
         name: 'AdminSettings',

@@ -22,7 +22,7 @@
           <el-menu-item
             v-if="!route.children || route.children.length === 0"
             :key="`item-${route.path}`"
-            :index="route.path"
+            :index="`/admin/${route.path}`"
           >
             <el-icon v-if="route.meta?.icon">
               <component :is="route.meta.icon" />
@@ -31,7 +31,7 @@
           </el-menu-item>
 
           <!-- 多层菜单 -->
-          <el-sub-menu v-else :key="`submenu-${route.path}`" :index="route.path">
+          <el-sub-menu v-else :key="`submenu-${route.path}`" :index="`/admin/${route.path}`">
             <template #title>
               <el-icon v-if="route.meta?.icon">
                 <component :is="route.meta.icon" />
@@ -41,7 +41,7 @@
             <el-menu-item
               v-for="child in route.children"
               :key="child.path"
-              :index="`${route.path}/${child.path}`"
+              :index="`/admin/${route.path}/${child.path}`"
             >
               {{ child.meta?.title }}
             </el-menu-item>
@@ -75,30 +75,14 @@ const activeMenu = computed(() => {
 
 // 过滤需要显示的菜单路由
 const menuRoutes = computed(() => {
-  const routes = router.getRoutes()
-  return routes.filter((routeItem: RouteRecordRaw) => {
-    // 只显示管理后台的一级菜单路由
-    // 1. 必须是 admin 模块的路由
-    // 2. 路径必须以 /admin 开头
-    // 3. 不能是隐藏的路由
-    // 4. 不能是登录页
-    // 5. 路径格式必须是 /admin 或 /admin/xxx（不能是 /admin/xxx/yyy）
-    const isAdminModule = routeItem.meta?.module === 'admin'
-    const isNotHidden = !routeItem.meta?.hidden
-    const isNotLogin = routeItem.path !== '/admin/login'
+  // 获取 /admin 的子路由
+  const adminRoute = router.getRoutes().find(r => r.path === '/admin')
+  if (!adminRoute || !adminRoute.children) return []
 
-    // 检查路径层级：只显示 /admin 或 /admin/xxx 格式的路由
-    // 排除子路由如 /admin/products/list
-    const pathParts = routeItem.path.split('/').filter((p: string) => p)
-    const isTopLevel = pathParts.length <= 2 // ['admin'] 或 ['admin', 'products']
-
-    return (
-      isAdminModule &&
-      isNotHidden &&
-      isNotLogin &&
-      isTopLevel &&
-      routeItem.path.startsWith('/admin')
-    )
+  // 过滤出需要显示的菜单项
+  return adminRoute.children.filter((child: RouteRecordRaw) => {
+    // 排除隐藏的路由和没有 title 的路由
+    return !child.meta?.hidden && child.meta?.title
   })
 })
 </script>

@@ -74,7 +74,8 @@ service.interceptors.response.use(
         case 401:
           ElMessage.error('登录已过期，请重新登录')
           localStorage.removeItem('admin-token')
-          router.push('/login')
+          localStorage.removeItem('admin-refresh-token')
+          router.push('/admin/login')
           break
         case 403:
           ElMessage.error('权限不足')

@@ -92,8 +92,12 @@ const handleLogin = async () => {
       localStorage.setItem('admin-refresh-token', response.data.refreshToken)
 
       ElMessage.success('登录成功')
-      // 跳转到后台管理首页
-      router.push('/admin/dashboard')
+
+      // 使用 nextTick 确保 DOM更新后再跳转，也给localStorage一个稳定的时间
+      await new Promise(resolve => setTimeout(resolve, 100))
+
+      // 使用 replace 而不是 push，避免后退回到登录页
+      await router.replace('/admin/dashboard')
     }
   } catch (error: any) {
     console.error('登录失败:', error)
