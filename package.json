@@ -5,7 +5,9 @@
   "description": "现代化化妆品品牌官网与后台管理系统",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build": "turbo run build && node scripts/prepare-deploy.js",
+    "build:web": "cd apps/web && pnpm run build",
+    "build:server": "cd apps/server && pnpm run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
