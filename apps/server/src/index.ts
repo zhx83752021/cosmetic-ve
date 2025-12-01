@@ -87,8 +87,9 @@ const limiter = rateLimit({
   message: '请求过于频繁，请稍后再试',
 })
 app.use('/api/', limiter)
-// 健康检查
-app.get('/health', (req, res) => {
+
+// 健康检查处理函数
+const healthCheck = (req, res) => {
   const hasDatabase = !!process.env.DATABASE_URL
   const hasJwtSecret = !!process.env.JWT_SECRET
 
@@ -106,7 +107,12 @@ app.get('/health', (req, res) => {
       allowedOrigins: productionOrigins,
     },
   })
-})
+}
+
+// 健康检查（支持两种路径）
+app.get('/health', healthCheck)
+app.get('/api/health', healthCheck)
+
 // API路由
 app.use('/api', routes)
 // 404处理
