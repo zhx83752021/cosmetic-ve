@@ -29,22 +29,37 @@ if (process.env.CORS_ORIGINS) {
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log(
+        `🔍 CORS检查 - Origin: ${origin}, 环境: ${isProduction ? 'production' : 'development'}`
+      )
+
       // 允许没有 origin 的请求（如 Postman、服务器端请求）
-      if (!origin) return callback(null, true)
+      if (!origin) {
+        console.log('✅ 允许无origin请求')
+        return callback(null, true)
+      }
+
       // 开发环境：允许所有 localhost
       if (isDevelopment && origin.startsWith('http://localhost:')) {
+        console.log('✅ 开发环境 - 允许localhost')
         return callback(null, true)
       }
+
       // 生产环境：允许所有 Vercel 域名
       if (isProduction && origin.endsWith('.vercel.app')) {
+        console.log('✅ 生产环境 - 允许Vercel域名')
         return callback(null, true)
       }
+
       // 检查生产环境白名单
       if (productionOrigins.includes(origin)) {
+        console.log('✅ 白名单匹配成功')
         return callback(null, true)
       }
+
       // 记录被拒绝的来源以便调试
       console.warn(`❌ CORS blocked origin: ${origin}`)
+      console.warn(`   白名单: ${JSON.stringify(productionOrigins)}`)
       callback(new Error(`CORS not allowed for origin: ${origin}`))
     },
     credentials: true,
@@ -68,7 +83,16 @@ const limiter = rateLimit({
 app.use('/api/', limiter)
 // 健康检查
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    version: '1.0.1',
+    cors: {
+      allowedOrigins: productionOrigins,
+      environment: process.env.NODE_ENV || 'development',
+      isVercel: process.env.VERCEL === '1',
+    },
+  })
 })
 // API路由
 app.use('/api', routes)
