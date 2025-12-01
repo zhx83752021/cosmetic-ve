@@ -1,5 +1,4 @@
 {
-  "installCommand": "npm install -g pnpm@8.12.1 && pnpm install --no-frozen-lockfile",
-  "buildCommand": "cd apps/server && pnpm run build && cd ../web && pnpm run build && cd ../.. && node scripts/prepare-deploy.js",
+  "installCommand": "npm install -g pnpm@8.12.1 && NODE_ENV=development pnpm install --no-frozen-lockfile",
   "outputDirectory": "public"
 }
