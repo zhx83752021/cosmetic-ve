@@ -56,6 +56,3 @@ docs
 
 # Husky
 .husky
-
-# API 目录（会在构建过程中生成）
-api
