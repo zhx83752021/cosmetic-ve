@@ -2,12 +2,6 @@
   "installCommand": "npm install -g pnpm@8.12.1 && pnpm install",
   "buildCommand": "pnpm run build",
   "outputDirectory": "public",
-  "functions": {
-    "apps/server/api/*.js": {
-      "runtime": "nodejs20.x",
-      "includeFiles": "apps/server/dist/**"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/:path*",
