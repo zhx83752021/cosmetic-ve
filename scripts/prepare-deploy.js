@@ -38,24 +38,17 @@ if (fs.existsSync(webDist)) {
   process.exit(1)
 }
 
-// 2. 复制后端 API 到根目录（Vercel serverless functions）
-const serverApi = path.join(__dirname, '..', 'apps', 'server', 'api')
+// 2. 复制后端编译产物到 api/dist
 const serverDist = path.join(__dirname, '..', 'apps', 'server', 'dist')
-const rootApi = path.join(__dirname, '..', 'api')
+const apiDist = path.join(__dirname, '..', 'api', 'dist')
 
-if (fs.existsSync(serverApi) && fs.existsSync(serverDist)) {
-  console.log('✅ 复制后端 API 到根目录 api/ ...')
-
-  // 复制 api 目录
-  copyDir(serverApi, rootApi)
-
-  // 复制 dist 目录到 api/dist
-  const apiDist = path.join(rootApi, 'dist')
+if (fs.existsSync(serverDist)) {
+  console.log('✅ 复制后端编译产物到 api/dist/ ...')
   copyDir(serverDist, apiDist)
-
   console.log('✅ 后端 API 文件准备完成！')
 } else {
-  console.warn('⚠️  警告: 后端 API 文件不存在，跳过复制')
+  console.error('❌ 错误: apps/server/dist 目录不存在')
+  process.exit(1)
 }
 
 console.log('✅ 部署文件准备完成！')
