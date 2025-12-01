@@ -16,7 +16,7 @@
     </div>
 
     <!-- 积分规则 -->
-    <div class="card">
+    <div class="card p-6">
       <h3 class="mb-4 text-xl font-bold">积分规则</h3>
       <div class="grid gap-4 md:grid-cols-2">
         <div class="flex items-start gap-3 rounded-lg bg-neutral-gray p-4">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- 积分明细 -->
-    <div class="card">
+    <div class="card p-6">
       <div class="mb-6 flex items-center justify-between">
         <h3 class="text-xl font-bold">积分明细</h3>
         <select v-model="filterType" class="input w-40">

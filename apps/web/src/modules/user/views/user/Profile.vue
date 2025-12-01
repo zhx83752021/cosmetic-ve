@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card p-6">
     <h2 class="mb-6 text-2xl font-bold">个人信息</h2>
 
     <form class="space-y-6" @submit.prevent="handleSubmit">
@@ -7,12 +7,7 @@
         <!-- 用户名 -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">用户名</label>
-          <input
-            v-model="form.username"
-            type="text"
-            disabled
-            class="input w-full bg-gray-50"
-          />
+          <input v-model="form.username" type="text" disabled class="input w-full bg-gray-50" />
           <p class="mt-1 text-xs text-gray-500">用户名不可修改</p>
         </div>
 
@@ -30,23 +25,13 @@
         <!-- 邮箱 -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">邮箱</label>
-          <input
-            v-model="form.email"
-            type="email"
-            class="input w-full"
-            placeholder="请输入邮箱"
-          />
+          <input v-model="form.email" type="email" class="input w-full" placeholder="请输入邮箱" />
         </div>
 
         <!-- 手机号 -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">手机号</label>
-          <input
-            v-model="form.phone"
-            type="tel"
-            class="input w-full"
-            placeholder="请输入手机号"
-          />
+          <input v-model="form.phone" type="tel" class="input w-full" placeholder="请输入手机号" />
         </div>
 
         <!-- 性别 -->
@@ -54,30 +39,15 @@
           <label class="mb-2 block text-sm font-medium text-gray-700">性别</label>
           <div class="flex gap-4">
             <label class="flex items-center cursor-pointer">
-              <input
-                v-model="form.gender"
-                type="radio"
-                value="male"
-                class="mr-2"
-              />
+              <input v-model="form.gender" type="radio" value="male" class="mr-2" />
               <span>男</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input
-                v-model="form.gender"
-                type="radio"
-                value="female"
-                class="mr-2"
-              />
+              <input v-model="form.gender" type="radio" value="female" class="mr-2" />
               <span>女</span>
             </label>
             <label class="flex items-center cursor-pointer">
-              <input
-                v-model="form.gender"
-                type="radio"
-                value="other"
-                class="mr-2"
-              />
+              <input v-model="form.gender" type="radio" value="other" class="mr-2" />
               <span>保密</span>
             </label>
           </div>
@@ -86,11 +56,7 @@
         <!-- 生日 -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">生日</label>
-          <input
-            v-model="form.birthday"
-            type="date"
-            class="input w-full"
-          />
+          <input v-model="form.birthday" type="date" class="input w-full" />
         </div>
       </div>
 
@@ -115,12 +81,8 @@
 
       <!-- 操作按钮 -->
       <div class="flex justify-end gap-4">
-        <button type="button" class="btn btn-secondary" @click="resetForm">
-          取消
-        </button>
-        <button type="submit" class="btn btn-primary">
-          保存修改
-        </button>
+        <button type="button" class="btn btn-secondary" @click="resetForm">取消</button>
+        <button type="submit" class="btn btn-primary">保存修改</button>
       </div>
     </form>
   </div>

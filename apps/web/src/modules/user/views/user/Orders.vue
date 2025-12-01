@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card p-6">
     <h2 class="mb-6 text-2xl font-bold">我的订单</h2>
 
     <!-- 订单状态Tab -->

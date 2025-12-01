@@ -1,10 +1,8 @@
 <template>
-  <div class="card">
+  <div class="card p-6">
     <div class="mb-6 flex items-center justify-between">
       <h2 class="text-2xl font-bold">收货地址</h2>
-      <button class="btn btn-primary" @click="showModal = true">
-        + 新增地址
-      </button>
+      <button class="btn btn-primary" @click="showModal = true">+ 新增地址</button>
     </div>
 
     <div v-if="addresses.length === 0" class="py-20 text-center text-gray-500">
@@ -24,10 +22,7 @@
             <span class="font-semibold text-gray-900">{{ address.name }}</span>
             <span class="ml-3 text-gray-600">{{ address.phone }}</span>
           </div>
-          <span
-            v-if="address.isDefault"
-            class="rounded bg-primary px-2 py-1 text-xs text-white"
-          >
+          <span v-if="address.isDefault" class="rounded bg-primary px-2 py-1 text-xs text-white">
             默认
           </span>
         </div>
@@ -38,9 +33,7 @@
         </p>
 
         <div class="flex gap-2">
-          <button class="btn btn-secondary btn-sm" @click="editAddress(address)">
-            编辑
-          </button>
+          <button class="btn btn-secondary btn-sm" @click="editAddress(address)">编辑</button>
           <button
             v-if="!address.isDefault"
             class="btn btn-secondary btn-sm"
@@ -143,12 +136,8 @@
           </div>
 
           <div class="flex justify-end gap-4">
-            <button type="button" class="btn btn-secondary" @click="cancelEdit">
-              取消
-            </button>
-            <button type="submit" class="btn btn-primary">
-              保存
-            </button>
+            <button type="button" class="btn btn-secondary" @click="cancelEdit">取消</button>
+            <button type="submit" class="btn btn-primary">保存</button>
           </div>
         </form>
       </div>

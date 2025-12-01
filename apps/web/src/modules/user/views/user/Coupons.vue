@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card p-6">
     <h2 class="mb-6 text-2xl font-bold">优惠券</h2>
 
     <!-- 优惠券状态Tab -->
@@ -11,7 +11,7 @@
           'pb-3 text-sm font-medium transition-colors',
           currentStatus === status.value
             ? 'border-b-2 border-primary text-primary'
-            : 'text-gray-600 hover:text-primary'
+            : 'text-gray-600 hover:text-primary',
         ]"
         @click="currentStatus = status.value"
       >
@@ -35,7 +35,9 @@
         <!-- 左侧金额 -->
         <div
           class="flex w-32 flex-col items-center justify-center"
-          :class="coupon.status === 'unused' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'"
+          :class="
+            coupon.status === 'unused' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'
+          "
         >
           <div class="text-sm">{{ coupon.type === 'discount' ? '折扣券' : '满减券' }}</div>
           <div class="my-2 text-3xl font-bold">
@@ -54,9 +56,7 @@
           </div>
 
           <div class="mt-3 flex items-center justify-between">
-            <span class="text-sm text-gray-500">
-              有效期至：{{ formatDate(coupon.endTime) }}
-            </span>
+            <span class="text-sm text-gray-500"> 有效期至：{{ formatDate(coupon.endTime) }} </span>
             <button
               v-if="coupon.status === 'unused'"
               class="btn btn-primary btn-sm"
@@ -68,9 +68,7 @@
               v-else
               class="rounded px-3 py-1 text-sm"
               :class="
-                coupon.status === 'used'
-                  ? 'bg-gray-100 text-gray-600'
-                  : 'bg-red-100 text-red-600'
+                coupon.status === 'used' ? 'bg-gray-100 text-gray-600' : 'bg-red-100 text-red-600'
               "
             >
               {{ coupon.status === 'used' ? '已使用' : '已过期' }}
@@ -90,9 +88,7 @@
           class="input flex-1"
           placeholder="请输入优惠券兑换码"
         />
-        <button class="btn btn-primary" @click="redeemCoupon">
-          兑换
-        </button>
+        <button class="btn btn-primary" @click="redeemCoupon">兑换</button>
       </div>
     </div>
   </div>
@@ -169,7 +165,7 @@ const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('zh-CN')
 }
 
-const useCoupon = (coupon: Coupon) => {
+const useCoupon = (_coupon: Coupon) => {
   router.push('/products')
 }
 
