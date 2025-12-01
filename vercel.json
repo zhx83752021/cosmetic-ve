@@ -1,4 +1,13 @@
 {
   "installCommand": "npm install -g pnpm@8.12.1 && NODE_ENV=development pnpm install --no-frozen-lockfile",
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
