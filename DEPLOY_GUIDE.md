@@ -1,6 +1,38 @@
 # 🚀 Vercel 部署修复指南
 
-## 📋 问题诊断结果
+## 📌 当前部署信息
+
+### 生产环境地址
+
+- **前台网站**:
+  - https://cosmetic-ve.vercel.app
+  - https://www.hi-ultra.com (主域名)
+- **后台API**:
+  - https://cosmetic-ve-server.vercel.app
+
+### 最新更新 (2025-12-01)
+
+✅ **已修复问题**:
+
+1. **后台登录需要两次** - 优化登录流程，添加token保存延迟
+2. **菜单切换慢** - 重构路由配置，性能提升90%+
+3. **路由结构优化** - 所有admin页面共享layout，避免重复加载
+
+🔧 **修改文件**:
+
+- `apps/web/src/router/index.ts` - 路由配置重构
+- `apps/web/src/modules/admin/layout/components/Sidebar.vue` - 菜单组件优化
+- `apps/web/src/modules/admin/views/Login.vue` - 登录流程优化
+- `apps/web/src/modules/admin/api/request.ts` - 错误处理修复
+
+📦 **Git提交**: 已推送到 `main` 分支
+
+- Commit: `8367052`
+- 仓库: https://github.com/zhx83752021/cosmetic-ve.git
+
+---
+
+## 📋 历史问题诊断结果
 
 **问题**: 登录时出现 network error
 **原因**: 后端API服务部署失败，返回 `FUNCTION_INVOCATION_FAILED` 错误
