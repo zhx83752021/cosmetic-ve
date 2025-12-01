@@ -89,14 +89,21 @@ const limiter = rateLimit({
 app.use('/api/', limiter)
 // 健康检查
 app.get('/health', (req, res) => {
+  const hasDatabase = !!process.env.DATABASE_URL
+  const hasJwtSecret = !!process.env.JWT_SECRET
+
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     version: '1.0.1',
+    environment: {
+      nodeEnv: process.env.NODE_ENV || 'development',
+      isVercel: process.env.VERCEL === '1',
+      hasDatabase,
+      hasJwtSecret,
+    },
     cors: {
       allowedOrigins: productionOrigins,
-      environment: process.env.NODE_ENV || 'development',
-      isVercel: process.env.VERCEL === '1',
     },
   })
 })
