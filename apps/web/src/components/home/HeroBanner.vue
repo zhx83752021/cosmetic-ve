@@ -44,14 +44,14 @@ interface Slide {
 
 const slides = ref<Slide[]>([
   {
-    image: '/uploads/products/serum.png',
+    image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=1600',
     title: '焕发肌肤光彩',
     subtitle: '专业护肤，由内而外的美丽蜕变',
     buttonText: '立即选购',
     link: '/products?category=1',
   },
   {
-    image: '/uploads/products/lipstick.png',
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfaf43e218?auto=format&fit=crop&q=80&w=1600',
     title: '奢华彩妆系列',
     subtitle: '精致妆容，展现独特魅力',
     buttonText: '探索更多',
