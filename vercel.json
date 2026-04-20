@@ -4,11 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
+  "buildCommand": "pnpm --filter @cosmetics/web build",
   "rewrites": [
     {
       "source": "/api/(.*)",
