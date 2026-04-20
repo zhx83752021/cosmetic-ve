@@ -3,7 +3,7 @@
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "NODE_ENV=development pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm --filter @cosmetics/web build",
   "outputDirectory": "apps/web/dist",
   "rewrites": [
