@@ -1,21 +1,31 @@
 {
-  "installCommand": "npm install -g pnpm@8.12.1 && NODE_ENV=development pnpm install --no-frozen-lockfile",
-  "buildCommand": "cd apps/server && pnpm run build && cd ../web && pnpm run build && cd ../.. && node scripts/prepare-deploy.js",
-  "outputDirectory": "public",
-  "functions": {
-    "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
+  "version": 2,
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api"
+      "source": "/api/(.*)",
+      "destination": "https://hi-ultra.com/api/$1"
     },
     {
-      "source": "/((?!api).*)",
+      "source": "/uploads/(.*)",
+      "destination": "/uploads/$1"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/uploads/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
