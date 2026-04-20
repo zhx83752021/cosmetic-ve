@@ -19,6 +19,8 @@ export interface Product {
     status: string
     isNew: boolean
     isHot: boolean
+    rating?: number
+    reviewCount?: number
     createdAt: string
     updatedAt: string
     category?: {
@@ -154,3 +156,10 @@ export const getCategories = () => {
 export const getCategoryById = (id: number) => {
     return get<Category>(`/products/categories/${id}`)
 }
+
+/**
+ * 管理后台所需 CRUD 接口 (补全)
+ */
+export const createProduct = (data: any) => post<Product>('/products', data)
+export const updateProduct = (id: number, data: any) => put<Product>(`/products/${id}`, data)
+export const deleteProduct = (id: number) => del(`/products/${id}`)
