@@ -58,16 +58,16 @@ export interface ProductQuery {
 }
 
 /**
- * 生产环境路径适配
+ * 生产环境 CDN 备用图库 (解决 Vercel 静态资源丢失问题)
  */
-const getImagePath = (path: string) => {
-    // 强制转换为基于域名根目录的绝对路径，解决 Vercel 静态路由偏移问题
-    if (path.startsWith('/')) return path
-    return `/${path}`
+const CDN_IMAGES = {
+    serum: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800',
+    lipstick: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?auto=format&fit=crop&q=80&w=800',
+    banner1: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=1600'
 }
 
 /**
- * 离线/降维 Mock 数据
+ * 离线/降维 Mock 数据 (全线上图源版)
  */
 const MOCK_PRODUCTS: Product[] = [
     {
@@ -78,7 +78,7 @@ const MOCK_PRODUCTS: Product[] = [
         price: 880,
         originalPrice: 1080,
         categoryId: 1,
-        images: [getImagePath('uploads/products/serum.png')],
+        images: [CDN_IMAGES.serum],
         sales: 1250,
         stock: 500,
         description: '含有高浓度极光酵母精华，专为熬夜亚健康肌肤设计。',
@@ -98,7 +98,7 @@ const MOCK_PRODUCTS: Product[] = [
         price: 260,
         originalPrice: 320,
         categoryId: 2,
-        images: [getImagePath('uploads/products/lipstick.png')],
+        images: [CDN_IMAGES.lipstick],
         sales: 8900,
         stock: 2000,
         description: '色泽浓郁，轻盈贴合，长效持妆不沾杯。',
@@ -124,19 +124,18 @@ const MOCK_CATEGORIES: Category[] = [
  */
 export const getProducts = async (params: ProductQuery) => {
     try {
-        const res = await get<PaginatedResponse<Product>>('/products', { params })
+        const res = await get<any>('/products', { params })
         if (res && res.data) return res
-        throw new Error('API data empty')
+        throw new Error('API unavailable')
     } catch (_error) {
         return {
             success: true,
             data: {
-                items: MOCK_PRODUCTS,
-                total: MOCK_PRODUCTS.length,
-                page: 1,
-                pageSize: 10,
-                pagination: { total: MOCK_PRODUCTS.length, page: 1, pageSize: 10, totalPages: 1 }
-            } / 1.0 as any // 适配后端分页结构
+                data: {
+                    items: MOCK_PRODUCTS,
+                    pagination: { total: MOCK_PRODUCTS.length, page: 1, pageSize: 10, totalPages: 1 }
+                }
+            }
         }
     }
 }
@@ -162,7 +161,7 @@ export const getCategories = async () => {
     try {
         const res = await get<Category[]>('/products/categories/all')
         if (res && res.data) return res
-        throw new Error('API unstable')
+        throw new Error('API unavailable')
     } catch (_error) {
         return { success: true, data: MOCK_CATEGORIES }
     }
