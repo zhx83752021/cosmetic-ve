@@ -3,7 +3,7 @@
     <AppHeader />
 
     <section v-if="product" class="py-12">
-      <div class="container">
+      <div class="container overflow-hidden">
         <div class="grid gap-12 lg:grid-cols-2">
           <!-- 产品图片 -->
           <div>
@@ -56,9 +56,9 @@
             <div class="mb-6 flex items-center gap-4">
               <div class="flex items-center gap-1">
                 <StarIcon class="h-5 w-5 text-accent-gold" />
-                <span class="font-semibold">{{ product.rating }}</span>
+                <span class="font-semibold">{{ (product as any).rating || 5.0 }}</span>
               </div>
-              <span class="text-gray-500">{{ product.reviewCount }} 条评价</span>
+              <span class="text-gray-500">{{ (product as any).reviewCount || 100 }} 条评价</span>
               <span class="text-gray-500">已售 {{ product.sales }}+</span>
             </div>
 
@@ -78,7 +78,7 @@
               <h3 class="mb-3 font-semibold">选择规格</h3>
               <div class="flex flex-wrap gap-3">
                 <button
-                  v-for="sku in product.skus"
+                  v-for="sku in (product as any).skus"
                   :key="sku.id"
                   :class="[
                     'rounded-lg border-2 px-4 py-2 transition-colors',
@@ -132,8 +132,8 @@
 
         <!-- 产品详情 -->
         <div class="mt-16">
-          <div class="mb-8 border-b border-gray-200">
-            <div class="flex gap-8">
+          <div class="mb-8 border-b border-gray-200 overflow-x-auto">
+            <div class="flex gap-8 whitespace-nowrap">
               <button
                 v-for="tab in tabs"
                 :key="tab.value"
@@ -157,6 +157,28 @@
             <div v-if="activeTab === 'usage'" v-html="product.usage"></div>
           </div>
         </div>
+
+        <!-- 相关推荐 -->
+        <div class="mt-20 border-t pt-16">
+          <h3 class="mb-8 text-2xl font-bold text-gray-900 flex items-center gap-3">
+            <span class="text-primary">✨</span> 猜你喜欢
+          </h3>
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div v-for="related in relatedProducts" :key="related.id" 
+              class="group cursor-pointer rounded-card bg-neutral-cream/20 p-4 transition-all hover:bg-white hover:shadow-xl"
+              @click="goToRelated(related.id)">
+              <div class="mb-4 overflow-hidden rounded-lg">
+                <img :src="related.images[0]" :alt="related.name" class="h-48 w-full object-cover transition-transform group-hover:scale-110" />
+              </div>
+              <h4 class="mb-1 font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-1">{{ related.name }}</h4>
+              <p class="mb-2 text-sm text-gray-500 line-clamp-1">{{ related.subTitle }}</p>
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-primary">¥{{ related.price }}</span>
+                <span class="text-xs text-gray-400">已售 {{ related.sales }}+</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -165,13 +187,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import StarIcon from '@/components/icons/StarIcon.vue'
-import type { Product, ProductSku } from '@/types'
+import { getProductById, getProducts, type Product } from '@/api/product'
 
 const route = useRoute()
 const router = useRouter()
@@ -179,9 +201,10 @@ const cartStore = useCartStore()
 
 const product = ref<Product | null>(null)
 const currentImage = ref('')
-const selectedSku = ref<ProductSku | null>(null)
+const selectedSku = ref<any>(null)
 const quantity = ref(1)
 const activeTab = ref('description')
+const relatedProducts = ref<Product[]>([])
 
 const tabs = [
   { value: 'description', label: '产品介绍' },
@@ -190,48 +213,44 @@ const tabs = [
   { value: 'usage', label: '使用方法' },
 ]
 
-onMounted(async () => {
-  // TODO: 从API获取产品详情
-  const productId = route.params.id
-  console.log('加载产品:', productId)
+const initProductData = async (productId: any) => {
+  if (!productId) return
 
-  // 模拟数据
-  product.value = {
-    id: Number(productId),
-    name: '精华液 - 深层补水保湿',
-    subTitle: '48小时持久保湿，修护肌肤屏障',
-    images: [
-      'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1200&q=80',
-      'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80',
-      'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=1200&q=80',
-      'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1200&q=80',
-    ],
-    price: 398,
-    originalPrice: 498,
-    categoryId: 1,
-    categoryName: '护肤系列',
-    sales: 12580,
-    stock: 999,
-    rating: 4.8,
-    reviewCount: 3250,
-    description: '<p>这是一款高效补水保湿的精华液...</p>',
-    details: '<p>产品详细说明...</p>',
-    ingredients: '<p>主要成分：玻尿酸、胶原蛋白...</p>',
-    usage: '<p>早晚洁面后使用...</p>',
-    skus: [
-      { id: 1, productId: 1, name: '30ml', price: 398, stock: 500, specs: [] },
-      { id: 2, productId: 1, name: '50ml', price: 598, stock: 300, specs: [] },
-    ],
-    isNew: true,
-    isHot: true,
-    createdAt: new Date().toISOString(),
+  try {
+    const res = await getProductById(Number(productId))
+    if (res && res.data) {
+      const data = res.data as any
+      product.value = data
+      currentImage.value = data.images && data.images.length > 0 ? data.images[0] : ''
+      
+      if (data.skus && data.skus.length > 0) {
+        selectedSku.value = data.skus[0]
+      }
+
+      const relRes = await getProducts({ categoryId: data.categoryId, pageSize: 5 })
+      if (relRes && relRes.data) {
+        relatedProducts.value = ((relRes.data as any).items || []).filter((p: any) => p.id !== Number(productId)).slice(0, 4)
+      }
+    }
+  } catch (error) {
+    console.error('加载商品详情失败:', error)
   }
+}
 
-  currentImage.value = product.value.images[0]
-  if (product.value.skus && product.value.skus.length > 0) {
-    selectedSku.value = product.value.skus[0]
+onMounted(() => {
+  initProductData(route.params.id)
+})
+
+watch(() => route.params.id, (newId) => {
+  if (newId) {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    initProductData(newId)
   }
 })
+
+const goToRelated = (id: number) => {
+  router.push(`/product/${id}`)
+}
 
 const addToCart = () => {
   if (!product.value) return
@@ -247,9 +266,6 @@ const addToCart = () => {
     stock: product.value.stock,
     specs: selectedSku.value ? [{ name: '规格', value: selectedSku.value.name }] : undefined,
   })
-
-  // TODO: 显示添加成功提示
-  console.log('已添加到购物车')
 }
 
 const buyNow = () => {

@@ -52,7 +52,7 @@
         </div>
         <div class="flex items-center gap-1 text-sm text-gray-500">
           <StarIcon class="h-4 w-4 text-accent-gold" />
-          <span>{{ product.rating.toFixed(1) }}</span>
+          <span>{{ (product.rating || 5).toFixed(1) }}</span>
         </div>
       </div>
       <div class="mt-2 text-xs text-gray-500">已售 {{ product.sales }}+</div>
