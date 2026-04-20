@@ -158,8 +158,15 @@ export const getCategoryById = (id: number) => {
 }
 
 /**
- * 管理后台所需 CRUD 接口 (补全)
+ * 管理端 - 商品 CRUD 接口
  */
 export const createProduct = (data: any) => post<Product>('/products', data)
 export const updateProduct = (id: number, data: any) => put<Product>(`/products/${id}`, data)
 export const deleteProduct = (id: number) => del(`/products/${id}`)
+
+/**
+ * 管理端 - 分类 CRUD 接口 (全量补齐)
+ */
+export const createCategory = (data: any) => post<Category>('/products/categories', data)
+export const updateCategory = (id: number, data: any) => put<Category>(`/products/categories/${id}`, data)
+export const deleteCategory = (id: number) => del(`/products/categories/${id}`)
