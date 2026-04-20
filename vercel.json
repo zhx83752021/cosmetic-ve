@@ -3,10 +3,16 @@
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://hi-ultra.com/api/$1"
+      "destination": "/api/$1"
     },
     {
       "source": "/uploads/(.*)",
