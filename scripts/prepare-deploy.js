@@ -60,6 +60,13 @@ if (fs.existsSync(serverDist)) {
 }
 
 // 3. 创建调试标记文件
+function listSafe(dir) {
+  try {
+    return fs.existsSync(dir) ? fs.readdirSync(dir).slice(0, 50) : null
+  } catch (_) {
+    return null
+  }
+}
 const debugFile = path.join(publicDir, 'deploy-debug.json')
 const debugData = {
   deployedAt: new Date().toISOString(),
@@ -67,6 +74,9 @@ const debugData = {
   serverDistExists: fs.existsSync(serverDist),
   apiDirExists: fs.existsSync(path.join(__dirname, '..', 'api')),
   nodeVersion: process.version,
+  publicTopLevel: listSafe(publicDir),
+  publicImages: listSafe(path.join(publicDir, 'images')),
+  publicUploadsProducts: listSafe(path.join(publicDir, 'uploads', 'products')),
 }
 fs.writeFileSync(debugFile, JSON.stringify(debugData, null, 2))
 console.log('✅ 调试标记文件已创建: /deploy-debug.json')

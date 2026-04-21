@@ -4,7 +4,8 @@ node_modules
 
 # 构建产物（本地）- 这些会在 Vercel 构建时重新生成
 apps/*/dist
-public
+# 注意：不要忽略 public 目录，否则 Vercel 上传源码阶段会连同构建时生成的静态资源
+# 一并判定；保持显式不忽略。
 # 不排除 api/dist，因为它在构建时生成
 
 # 日志
