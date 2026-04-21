@@ -10,6 +10,11 @@ import routes from './routes/index.js'
 dotenv.config()
 const app: express.Express = express()
 const PORT = process.env.PORT || 3001
+
+// Vercel / 反向代理环境下信任一层代理，避免 express-rate-limit
+// 抛出 ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1)
+
 // 安全中间件
 app.use(helmet())
 // CORS配置 - 智能检测环境
