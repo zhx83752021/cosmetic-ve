@@ -1,19 +1,14 @@
 {
   "version": 2,
   "framework": null,
-  "cleanUrls": true,
   "trailingSlash": false,
   "installCommand": "NODE_ENV=development pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": "public",
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
-    { "source": "/api", "destination": "/api/index.js" },
-    { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!api(?:/|$)|assets/|images/|uploads/|favicon|robots|deploy-debug).*)",
+      "destination": "/index.html"
+    }
   ]
 }
