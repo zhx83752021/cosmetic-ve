@@ -44,25 +44,30 @@ interface Slide {
 
 const slides = ref<Slide[]>([
   {
-    image: 'https://images.unsplash.com/photo-1522338242992-e1a54906a8da?auto=format&fit=crop&q=80&w=1600',
+    image: '/images/hero_skincare_1776305690452.png',
     title: '焕发肌肤光彩',
     subtitle: '专业护肤，由内而外的美丽蜕变',
     buttonText: '立即选购',
     link: '/products?category=1',
   },
   {
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfaf43e218?auto=format&fit=crop&q=80&w=1600',
+    image: '/images/hero_makeup_1776305708070.png',
     title: '奢华彩妆系列',
     subtitle: '精致妆容，展现独特魅力',
     buttonText: '探索更多',
     link: '/products?category=2',
+  },
+  {
+    image: '/images/hero_perfume_1776305749495.png',
+    title: '传世香氛系列',
+    subtitle: '独特香迹，定义个人格调',
+    buttonText: '开启发现',
+    link: '/products?category=3',
   }
 ])
 
-const swiperInstance = ref<any>(null)
-
 onMounted(() => {
-  swiperInstance.value = new Swiper('.swiper-container', {
+  new Swiper('.swiper-container', {
     modules: [Navigation, Pagination, Autoplay],
     loop: true,
     autoplay: {

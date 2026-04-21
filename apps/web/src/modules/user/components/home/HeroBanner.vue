@@ -47,26 +47,26 @@ interface Slide {
 
 const slides = ref<Slide[]>([
   {
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1920&q=80',
+    image: '/images/hero_skincare_1776305690452.png',
     title: '焕发肌肤光彩',
     subtitle: '专业护肤，由内而外的美丽蜕变',
     buttonText: '立即选购',
-    link: '/products?category=skincare', // 跳转到护肤品分类
+    link: '/products?category=1',
   },
   {
-    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1920&q=80',
+    image: '/images/hero_makeup_1776305708070.png',
     title: '奢华彩妆系列',
     subtitle: '精致妆容，展现独特魅力',
     buttonText: '探索更多',
-    link: '/products?category=makeup', // 跳转到彩妆分类
+    link: '/products?category=2',
   },
   {
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1920&q=80',
-    title: '新品上市',
-    subtitle: '限时优惠，尊享会员专属礼遇',
-    buttonText: '查看详情',
-    link: '/products', // 跳转到产品列表
-  },
+    image: '/images/hero_perfume_1776305749495.png',
+    title: '传世香氛系列',
+    subtitle: '独特香迹，定义个人格调',
+    buttonText: '开启发现',
+    link: '/products?category=3',
+  }
 ])
 
 // TODO: 从后台API获取轮播图数据
@@ -80,10 +80,8 @@ const slides = ref<Slide[]>([
 //   }
 // }
 
-let swiperInstance: Swiper | null = null
-
 onMounted(() => {
-  swiperInstance = new Swiper('.swiper-container', {
+  new Swiper('.swiper-container', {
     modules: [Navigation, Pagination, Autoplay],
     loop: true,
     autoplay: {

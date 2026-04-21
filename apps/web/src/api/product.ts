@@ -103,8 +103,8 @@ export const getCategories = async () => {
         const res = await get<Category[]>('/products/categories/all')
         return res
     } catch (error) {
-        console.error('Categorid API Error:', error)
-        return { success: false, data: [] }
+        console.error('Category API Error:', error)
+        return []
     }
 }
 
