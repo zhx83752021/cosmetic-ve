@@ -51,4 +51,16 @@ if (fs.existsSync(serverDist)) {
   process.exit(1)
 }
 
+// 3. 创建调试标记文件
+const debugFile = path.join(publicDir, 'deploy-debug.json')
+const debugData = {
+  deployedAt: new Date().toISOString(),
+  webDistExists: fs.existsSync(webDist),
+  serverDistExists: fs.existsSync(serverDist),
+  apiDirExists: fs.existsSync(path.join(__dirname, '..', 'api')),
+  nodeVersion: process.version
+}
+fs.writeFileSync(debugFile, JSON.stringify(debugData, null, 2))
+console.log('✅ 调试标记文件已创建: /deploy-debug.json')
+
 console.log('✅ 部署文件准备完成！')
