@@ -1,40 +1,50 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express'
+import cors from 'cors'
 
-// 如果后端逻辑在子包里，尝试动态引入其核心逻辑
-// 此处采用最稳健的桥接逻辑
-const app = express();
-app.use(cors());
-app.use(express.json());
+// 设置主应用入口
+// 注意：Vercel 部署时会先运行 build 命令，因此 dist 目录会存在
+// 使用动态 import 或直接 import 编译后的文件
+let serverApp
 
-// 路由转发逻辑 (直接对冲 404)
-app.get('/api/products/categories/all', (req, res) => {
-  // 临时兜底：如果后端模块尚未完全离合，至少让前端拿到分类亮起来
-  res.json({
-    success: true,
-    data: [
-        { id: 1, name: '护肤系列' },
-        { id: 2, name: '彩妆系列' },
-        { id: 3, name: '香氛系列' },
-        { id: 4, name: '洗护系列' }
-    ]
-  });
-});
-
-// 引入真正的后端逻辑 (如果存在)
 try {
-    const serverApp = require('../apps/server/api/index.js');
-    if (typeof serverApp === 'function') {
-        app.use('/api', serverApp);
-    }
+  // 优先尝试引入编译后的逻辑
+  // 在 Vercel 环境中，prepare-deploy.js 会将代码复制到 api/dist/
+  const module = await import('./dist/index.js')
+  serverApp = module.default
 } catch (e) {
-    console.error('Core backend link pending:', e.message);
+  console.error('Core backend link pending or internal error:', e.message)
 }
 
-// 错误处理，防止进程崩溃
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Backend Logic Error');
-});
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-module.exports = app;
+// 路由分发
+app.use((req, res, next) => {
+  if (serverApp) {
+    // 如果后端应用已加载，则将请求交给它
+    // 注意：serverApp 内部已经处理了 /api 前缀或路由逻辑
+    return serverApp(req, res, next)
+  }
+
+  // 如果后端还没加载好的备选逻辑 (防止 404)
+  if (req.url === '/api/products/categories/all' || req.url === '/products/categories/all') {
+    return res.json({
+      success: true,
+      data: [
+        { id: 1, name: '护肤系列', slug: 'skincare' },
+        { id: 2, name: '彩妆系列', slug: 'makeup' },
+        { id: 3, name: '香氛系列', slug: 'perfume' },
+        { id: 4, name: '洗护系列', slug: 'bodycare' },
+      ],
+    })
+  }
+
+  if (req.url === '/api/health' || req.url === '/health') {
+    return res.json({ status: 'ok', bridge: true })
+  }
+
+  res.status(404).json({ success: false, message: 'Backend Bridge: Resource Not Found' })
+})
+
+export default app
