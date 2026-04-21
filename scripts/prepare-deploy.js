@@ -38,6 +38,14 @@ if (fs.existsSync(webDist)) {
   process.exit(1)
 }
 
+// 1b. 兜底：将 apps/web/public 下的静态资源再合并一次
+// （防止 Vite 未将 publicDir 正确复制到 dist 导致 /images、/uploads 等 404）
+const webPublic = path.join(__dirname, '..', 'apps', 'web', 'public')
+if (fs.existsSync(webPublic)) {
+  console.log('✅ 合并 apps/web/public 静态资源到 public/ ...')
+  copyDir(webPublic, publicDir)
+}
+
 // 2. 复制后端编译产物到 api/dist
 const serverDist = path.join(__dirname, '..', 'apps', 'server', 'dist')
 const apiDist = path.join(__dirname, '..', 'api', 'dist')
@@ -58,7 +66,7 @@ const debugData = {
   webDistExists: fs.existsSync(webDist),
   serverDistExists: fs.existsSync(serverDist),
   apiDirExists: fs.existsSync(path.join(__dirname, '..', 'api')),
-  nodeVersion: process.version
+  nodeVersion: process.version,
 }
 fs.writeFileSync(debugFile, JSON.stringify(debugData, null, 2))
 console.log('✅ 调试标记文件已创建: /deploy-debug.json')
