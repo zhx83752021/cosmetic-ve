@@ -8,14 +8,10 @@
   "outputDirectory": "public",
   "functions": {
     "api/index.js": {
-      "memory": 1024,
-      "maxDuration": 10,
-      "includeFiles": "apps/server/{dist,prisma,node_modules/.prisma,node_modules/@prisma/client}/**"
+      "maxDuration": 10
     },
     "api/[...path].js": {
-      "memory": 1024,
-      "maxDuration": 10,
-      "includeFiles": "apps/server/{dist,prisma,node_modules/.prisma,node_modules/@prisma/client}/**"
+      "maxDuration": 10
     }
   },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
