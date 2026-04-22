@@ -5,9 +5,8 @@
     <PageHeroWithImage
       title="美妆学院"
       subtitle="护理与妆容实用内容"
-      image-src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1200&q=80&auto=format&fit=crop"
+      image-src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1920&q=80&auto=format&fit=crop"
       image-alt="化妆与护肤产品静物"
-      layout="split"
     />
 
     <section class="py-12">

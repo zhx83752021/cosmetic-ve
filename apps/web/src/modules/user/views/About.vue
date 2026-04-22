@@ -6,9 +6,8 @@
       <PageHeroWithImage
         title="雅妆品牌故事"
         subtitle="品牌起源与产品理念"
-        image-src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=80&auto=format&fit=crop"
+        image-src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1920&q=80&auto=format&fit=crop"
         image-alt="雅妆品牌美妆产品"
-        layout="stack"
       />
 
       <!-- Brand Story -->

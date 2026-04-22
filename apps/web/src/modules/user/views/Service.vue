@@ -5,9 +5,8 @@
     <PageHeroWithImage
       title="客户服务中心"
       subtitle="电话、在线与邮件渠道见下方"
-      image-src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1200&q=80&auto=format&fit=crop"
+      image-src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1920&q=80&auto=format&fit=crop"
       image-alt="产品与咨询服务"
-      layout="split"
     />
 
     <section class="py-16">
