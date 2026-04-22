@@ -21,6 +21,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:sync-database": "prisma migrate deploy && prisma db seed",
     "create-admin": "node scripts/create-admin.js",
     "check-db": "node scripts/check-database.js",
     "test": "vitest"

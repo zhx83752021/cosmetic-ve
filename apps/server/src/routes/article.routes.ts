@@ -95,6 +95,7 @@ router.get('/', async (req, res) => {
           title: true,
           cover: true,
           summary: true,
+          categoryId: true,
           author: true,
           views: true,
           likes: true,
@@ -132,17 +133,20 @@ router.get('/:id', async (req, res) => {
       where: { id: parseInt(id) },
     })
 
-    if (!article) {
+    if (!article || article.status !== 'published') {
       return res.status(404).json({ success: false, message: '文章不存在' })
     }
 
-    // 增加浏览量
     await prisma.article.update({
       where: { id: parseInt(id) },
       data: { views: { increment: 1 } },
     })
 
-    return successResponse(res, article)
+    const fresh = await prisma.article.findUnique({
+      where: { id: parseInt(id) },
+    })
+
+    return successResponse(res, fresh)
   } catch (error) {
     console.error('获取文章详情失败:', error)
     res.status(500).json({ success: false, message: '获取文章详情失败' })
