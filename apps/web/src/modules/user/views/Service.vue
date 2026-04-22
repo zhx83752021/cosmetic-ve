@@ -2,22 +2,11 @@
   <div class="service-page min-h-screen bg-gradient-to-b from-neutral-cream to-white pt-20">
     <AppHeader />
 
-    <!-- Hero Section -->
-    <section
-      class="relative overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-accent-lavender py-24 text-white"
-    >
-      <div class="absolute inset-0 opacity-15">
-        <div
-          class="absolute -left-20 top-20 h-64 w-64 rounded-full bg-gradient-to-br from-white to-accent-pink blur-3xl"
-        ></div>
-        <div
-          class="absolute -right-20 bottom-20 h-96 w-96 rounded-full bg-gradient-to-br from-accent-gold to-white blur-3xl"
-        ></div>
-      </div>
-      <div class="container relative">
+    <section class="border-b border-gray-200/80 bg-neutral-cream py-16 md:py-20">
+      <div class="container">
         <div class="mx-auto max-w-3xl text-center">
-          <h1 class="mb-4 text-5xl font-bold">客户服务中心</h1>
-          <p class="text-xl opacity-90">电话、在线与邮件渠道见下方</p>
+          <h1 class="mb-3 text-4xl font-bold text-text-primary md:text-5xl">客户服务中心</h1>
+          <p class="text-lg text-text-secondary md:text-xl">电话、在线与邮件渠道见下方</p>
         </div>
       </div>
     </section>

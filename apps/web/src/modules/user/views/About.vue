@@ -4,10 +4,10 @@
 
     <main>
       <!-- Hero Section -->
-      <section class="bg-primary-dark py-20 text-white">
+      <section class="border-b border-gray-200/80 bg-neutral-cream py-16 md:py-20">
         <div class="container text-center">
-          <h1 class="mb-4 text-5xl font-bold">雅妆品牌故事</h1>
-          <p class="text-xl opacity-90">演绎东方美学，传承匠心精神</p>
+          <h1 class="mb-3 text-4xl font-bold text-text-primary md:text-5xl">雅妆品牌故事</h1>
+          <p class="text-lg text-text-secondary md:text-xl">品牌起源与产品理念</p>
         </div>
       </section>
 

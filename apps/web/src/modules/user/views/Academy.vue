@@ -2,10 +2,10 @@
   <div class="academy-page min-h-screen bg-neutral-gray pt-20">
     <AppHeader />
 
-    <section class="bg-primary-dark py-12 text-white">
+    <section class="border-b border-gray-200/80 bg-neutral-cream py-12">
       <div class="container">
-        <h1 class="mb-2 text-4xl font-bold">美妆学院</h1>
-        <p class="text-lg opacity-90">专业美妆知识，打造精致生活</p>
+        <h1 class="mb-2 text-3xl font-bold text-text-primary md:text-4xl">美妆学院</h1>
+        <p class="text-lg text-text-secondary">护理与妆容实用内容</p>
       </div>
     </section>
 
