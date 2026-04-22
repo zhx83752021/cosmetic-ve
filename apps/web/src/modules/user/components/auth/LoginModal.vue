@@ -154,8 +154,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { useAuthModalStore } from '@/stores/auth-modal'
+import { login as loginApi, mapAuthUserToUserInfo } from '@/api/auth'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -182,36 +184,25 @@ const handleLogin = async () => {
   isLoading.value = true
 
   try {
-    // 模拟登录
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    // 设置用户信息
-    userStore.setUserInfo({
-      id: 1,
-      username: `用户${formData.value.phone.slice(-4)}`,
-      email: '',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80',
-      phone: formData.value.phone,
-      level: 1,
-      points: 1000,
-      createdAt: new Date().toISOString(),
+    const res = await loginApi({
+      account: formData.value.phone.trim(),
+      password: formData.value.password,
     })
-
-    // 保存token
-    const token = 'mock-token-' + Date.now()
-    userStore.setToken(token)
-    if (formData.value.remember) {
-      localStorage.setItem('token', token)
+    if (res?.success && res.data) {
+      const { user, accessToken, refreshToken } = res.data
+      userStore.setToken(accessToken)
+      if (formData.value.remember) {
+        localStorage.setItem('refreshToken', refreshToken)
+      } else {
+        localStorage.removeItem('refreshToken')
+      }
+      userStore.setUserInfo(mapAuthUserToUserInfo(user as Record<string, unknown>))
+      ElMessage.success(res.message || '登录成功')
+      handleClose()
+      router.push('/user')
     }
-
-    // 关闭模态窗口
-    handleClose()
-
-    // 跳转到用户中心
-    router.push('/user')
-  } catch (error) {
-    console.error('登录失败:', error)
-    alert('登录失败，请检查手机号和密码')
+  } catch {
+    /* 拦截器已提示 */
   } finally {
     isLoading.value = false
   }

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { getUserAccessToken } from '@/utils/authSession'
 
 // 用户端路由
 const userRoutes: RouteRecordRaw[] = [
@@ -252,8 +253,7 @@ router.beforeEach((to, from, next) => {
       return
     }
   } else if (to.meta.requiresAuth) {
-    const token = localStorage.getItem('token')
-    if (!token) {
+    if (!getUserAccessToken()) {
       next({ name: 'Home' })
       return
     }

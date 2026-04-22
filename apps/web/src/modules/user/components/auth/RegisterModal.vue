@@ -121,33 +121,9 @@
                   </p>
                 </div>
 
-                <!-- 验证码 -->
-                <div class="mb-4">
-                  <label class="mb-2 block text-sm font-semibold text-gray-700">
-                    <span class="flex items-center gap-2">
-                      <span>🔢</span>
-                      验证码
-                    </span>
-                  </label>
-                  <div class="flex gap-2">
-                    <input
-                      v-model="formData.captcha"
-                      type="text"
-                      placeholder="请输入验证码"
-                      class="input flex-1"
-                      required
-                      maxlength="6"
-                    />
-                    <button
-                      type="button"
-                      class="btn btn-secondary whitespace-nowrap text-sm"
-                      :disabled="countdown > 0"
-                      @click="sendCaptcha"
-                    >
-                      {{ countdown > 0 ? `${countdown}秒` : '获取' }}
-                    </button>
-                  </div>
-                </div>
+                <p class="mb-3 rounded-lg bg-gray-100 px-2 py-1.5 text-xs text-gray-600">
+                  短信未接入，仅需手机号 + 密码。
+                </p>
 
                 <!-- 服务条款 -->
                 <div class="mb-5">
@@ -223,22 +199,26 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { useAuthModalStore } from '@/stores/auth-modal'
+import { useUserStore } from '@/stores/user'
+import { register as registerApi, mapAuthUserToUserInfo } from '@/api/auth'
 
 const authModalStore = useAuthModalStore()
+const userStore = useUserStore()
+const router = useRouter()
 
 const formData = ref({
   phone: '',
   password: '',
   confirmPassword: '',
-  captcha: '',
   agreement: false,
 })
 
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const isLoading = ref(false)
-const countdown = ref(0)
 
 // 密码强度计算
 const passwordStrength = computed(() => {
@@ -259,7 +239,6 @@ const isFormValid = computed(() => {
     formData.value.phone.length === 11 &&
     formData.value.password.length >= 6 &&
     formData.value.password === formData.value.confirmPassword &&
-    formData.value.captcha.length === 6 &&
     formData.value.agreement
   )
 })
@@ -272,32 +251,6 @@ const switchToLogin = () => {
   authModalStore.switchToLogin()
 }
 
-// 发送验证码
-const sendCaptcha = () => {
-  if (!formData.value.phone) {
-    alert('请先输入手机号')
-    return
-  }
-
-  if (!/^[0-9]{11}$/.test(formData.value.phone)) {
-    alert('请输入正确的手机号')
-    return
-  }
-
-  console.log('发送验证码到:', formData.value.phone)
-
-  // 开始倒计时
-  countdown.value = 60
-  const timer = setInterval(() => {
-    countdown.value--
-    if (countdown.value <= 0) {
-      clearInterval(timer)
-    }
-  }, 1000)
-
-  alert('验证码已发送到您的手机')
-}
-
 // 处理注册
 const handleRegister = async () => {
   if (!isFormValid.value) {
@@ -307,16 +260,21 @@ const handleRegister = async () => {
   isLoading.value = true
 
   try {
-    // 模拟注册
-    await new Promise(resolve => setTimeout(resolve, 1500))
-
-    alert('注册成功！请登录')
-
-    // 切换到登录模态窗口
-    switchToLogin()
-  } catch (error) {
-    console.error('注册失败:', error)
-    alert('注册失败，请稍后重试')
+    const res = await registerApi({
+      phone: formData.value.phone.trim(),
+      password: formData.value.password,
+    })
+    if (res?.success && res.data) {
+      const { user, accessToken, refreshToken } = res.data
+      userStore.setToken(accessToken)
+      localStorage.setItem('refreshToken', refreshToken)
+      userStore.setUserInfo(mapAuthUserToUserInfo(user as Record<string, unknown>))
+      ElMessage.success(res.message || '注册成功')
+      authModalStore.closeAllModals()
+      router.push('/user')
+    }
+  } catch {
+    /* 拦截器已提示 */
   } finally {
     isLoading.value = false
   }

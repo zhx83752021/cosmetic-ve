@@ -6,9 +6,9 @@
       <div class="grid gap-6 md:grid-cols-2">
         <!-- 用户名 -->
         <div>
-          <label class="mb-2 block text-sm font-medium text-gray-700">用户名</label>
+          <label class="mb-2 block text-sm font-medium text-gray-700">用户名 / 手机</label>
           <input v-model="form.username" type="text" disabled class="input w-full bg-gray-50" />
-          <p class="mt-1 text-xs text-gray-500">用户名不可修改</p>
+          <p class="mt-1 text-xs text-gray-500">登录标识不可修改，可与昵称区分展示</p>
         </div>
 
         <!-- 昵称 -->
@@ -22,16 +22,22 @@
           />
         </div>
 
-        <!-- 邮箱 -->
+        <!-- 邮箱（当前接口仅展示，不写入后端） -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">邮箱</label>
-          <input v-model="form.email" type="email" class="input w-full" placeholder="请输入邮箱" />
+          <input
+            v-model="form.email"
+            type="email"
+            class="input w-full bg-gray-50"
+            placeholder="暂未绑定"
+            disabled
+          />
         </div>
 
         <!-- 手机号 -->
         <div>
           <label class="mb-2 block text-sm font-medium text-gray-700">手机号</label>
-          <input v-model="form.phone" type="tel" class="input w-full" placeholder="请输入手机号" />
+          <input v-model="form.phone" type="tel" class="input w-full bg-gray-50" disabled />
         </div>
 
         <!-- 性别 -->
@@ -90,7 +96,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+import { updateProfile, getCurrentUser, mapAuthUserToUserInfo } from '@/api/auth'
 
 const userStore = useUserStore()
 
@@ -118,19 +126,33 @@ const form = ref<ProfileForm>({
   createdAt: new Date().toISOString(),
 })
 
-onMounted(() => {
+function loadFormFromUser() {
   if (userStore.userInfo) {
+    const u = userStore.userInfo
     form.value = {
-      username: userStore.userInfo.username,
-      nickname: userStore.userInfo.nickname,
-      email: userStore.userInfo.email,
-      phone: userStore.userInfo.phone || '',
-      gender: userStore.userInfo.gender,
-      birthday: userStore.userInfo.birthday,
-      level: userStore.userInfo.level,
-      points: userStore.userInfo.points,
-      createdAt: userStore.userInfo.createdAt,
+      username: u.username || u.phone,
+      nickname: u.nickname,
+      email: u.email || '',
+      phone: u.phone || '',
+      gender: u.gender,
+      birthday: u.birthday,
+      level: u.level,
+      points: u.points,
+      createdAt: u.createdAt,
     }
+  }
+}
+
+onMounted(async () => {
+  loadFormFromUser()
+  try {
+    const res = await getCurrentUser()
+    if (res?.success && res.data) {
+      userStore.setUserInfo(mapAuthUserToUserInfo(res.data as Record<string, unknown>))
+      loadFormFromUser()
+    }
+  } catch {
+    /* 未登录或已过期，由其它页面处理 */
   }
 })
 
@@ -140,28 +162,25 @@ const formatDate = (date: string) => {
 
 const handleSubmit = async () => {
   try {
-    // TODO: 调用更新用户信息API
-    console.log('更新用户信息:', form.value)
-    alert('保存成功！')
-  } catch (error) {
-    console.error('保存失败:', error)
-    alert('保存失败，请重试')
+    const res = await updateProfile({
+      nickname: form.value.nickname,
+      gender: form.value.gender,
+      birthday: form.value.birthday || undefined,
+    })
+    if (res?.success) {
+      const me = await getCurrentUser()
+      if (me?.success && me.data) {
+        userStore.setUserInfo(mapAuthUserToUserInfo(me.data as Record<string, unknown>))
+        loadFormFromUser()
+      }
+      ElMessage.success(res.message || '保存成功')
+    }
+  } catch {
+    /* 拦截器会提示 */
   }
 }
 
 const resetForm = () => {
-  if (userStore.userInfo) {
-    form.value = {
-      username: userStore.userInfo.username,
-      nickname: userStore.userInfo.nickname,
-      email: userStore.userInfo.email,
-      phone: userStore.userInfo.phone || '',
-      gender: userStore.userInfo.gender,
-      birthday: userStore.userInfo.birthday,
-      level: userStore.userInfo.level,
-      points: userStore.userInfo.points,
-      createdAt: userStore.userInfo.createdAt,
-    }
-  }
+  loadFormFromUser()
 }
 </script>

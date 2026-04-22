@@ -6,9 +6,13 @@
     <!-- 产品图片 -->
     <div class="relative overflow-hidden">
       <img
-        :src="product.images[0]"
+        :src="product.images?.[0] || fallbackImage"
         :alt="product.name"
         class="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+        loading="lazy"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        @error="onRemoteImageError"
       />
       <!-- 标签 -->
       <div class="absolute left-4 top-4 flex flex-col gap-2">
@@ -64,6 +68,9 @@
 import { useRouter } from 'vue-router'
 import StarIcon from '@/components/icons/StarIcon.vue'
 import type { Product } from '@/types'
+import { onRemoteImageError, REMOTE_IMAGE_FALLBACK } from '@/utils/remoteImage'
+
+const fallbackImage = REMOTE_IMAGE_FALLBACK
 
 const props = defineProps<{
   product: Product

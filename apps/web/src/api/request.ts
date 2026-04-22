@@ -1,7 +1,13 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+
+/** 扩展 axios 配置（如公共登录/注册不触发 401 全局清会话） */
+export type AppRequestConfig = AxiosRequestConfig & {
+  __skipAuthSessionHandlers?: boolean
+}
 import { ElMessage } from 'element-plus'
 import router from '@/router'
+import { getUserAccessToken } from '@/utils/authSession'
 
 // API响应接口
 export interface ApiResponse<T = any> {
@@ -36,8 +42,11 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   config => {
-    // 添加认证令牌
-    const token = localStorage.getItem('admin-token')
+    const path = typeof window !== 'undefined' ? window.location.pathname : ''
+    const isAdmin = path.startsWith('/admin')
+    const adminToken = localStorage.getItem('admin-token')
+    const userToken = getUserAccessToken()
+    const token = isAdmin ? adminToken || userToken : userToken || adminToken
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -70,12 +79,36 @@ service.interceptors.response.use(
     if (error.response) {
       const { status, data } = error.response
 
-      switch (status) {
-        case 401:
-          ElMessage.error('登录已过期，请重新登录')
-          localStorage.removeItem('admin-token')
-          router.push('/login')
+      if ((error.config as { __skipAuthSessionHandlers?: boolean })?.__skipAuthSessionHandlers) {
+        ElMessage.error((data as { message?: string })?.message || '请求失败')
+        return Promise.reject(error)
+      }
+
+      switch (status as number) {
+        case 401: {
+          const path = typeof window !== 'undefined' ? window.location.pathname : ''
+          const isAdmin = path.startsWith('/admin')
+          ElMessage.error(isAdmin ? '登录已过期，请重新登录' : '登录已过期，请重新登录')
+          if (isAdmin) {
+            localStorage.removeItem('admin-token')
+            router.push('/admin/login')
+          } else {
+            localStorage.removeItem('token')
+            try {
+              const raw = localStorage.getItem('user-store')
+              if (raw) {
+                const p = JSON.parse(raw)
+                delete p.token
+                delete p.userInfo
+                localStorage.setItem('user-store', JSON.stringify(p))
+              }
+            } catch {
+              /* ignore */
+            }
+            router.push('/login')
+          }
           break
+        }
         case 403:
           ElMessage.error('权限不足')
           break
@@ -99,7 +132,7 @@ service.interceptors.response.use(
 )
 
 // 封装GET请求
-export const get = <T = any>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const get = <T = any>(url: string, config?: AppRequestConfig): Promise<ApiResponse<T>> => {
   return service
     .get<ApiResponse<T>>(url, config)
     .then((response: AxiosResponse<ApiResponse<T>>) => response.data)
@@ -109,7 +142,7 @@ export const get = <T = any>(url: string, config?: AxiosRequestConfig): Promise<
 export const post = <T = any>(
   url: string,
   data?: any,
-  config?: AxiosRequestConfig
+  config?: AppRequestConfig
 ): Promise<ApiResponse<T>> => {
   return service
     .post<ApiResponse<T>>(url, data, config)
@@ -120,7 +153,7 @@ export const post = <T = any>(
 export const put = <T = any>(
   url: string,
   data?: any,
-  config?: AxiosRequestConfig
+  config?: AppRequestConfig
 ): Promise<ApiResponse<T>> => {
   return service
     .put<ApiResponse<T>>(url, data, config)
@@ -128,7 +161,7 @@ export const put = <T = any>(
 }
 
 // 封装DELETE请求
-export const del = <T = any>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const del = <T = any>(url: string, config?: AppRequestConfig): Promise<ApiResponse<T>> => {
   return service
     .delete<ApiResponse<T>>(url, config)
     .then((response: AxiosResponse<ApiResponse<T>>) => response.data)

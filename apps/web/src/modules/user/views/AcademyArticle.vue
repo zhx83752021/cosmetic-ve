@@ -27,7 +27,15 @@
         </header>
 
         <div class="mb-8 overflow-hidden rounded-lg">
-          <img :src="article.cover" :alt="article.title" class="h-96 w-full object-cover" />
+          <img
+            :src="article.cover"
+            :alt="article.title"
+            class="h-96 w-full object-cover"
+            loading="eager"
+            decoding="async"
+            referrerpolicy="no-referrer"
+            @error="onRemoteImageError"
+          />
         </div>
 
         <div class="prose max-w-none text-gray-800" v-html="article.content"></div>
@@ -53,6 +61,7 @@ import { useRoute } from 'vue-router'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import { getArticleById, likeArticle, type Article } from '@/api/article'
+import { onRemoteImageError } from '@/utils/remoteImage'
 import { getCategories, type Category } from '@/api/product'
 
 const route = useRoute()

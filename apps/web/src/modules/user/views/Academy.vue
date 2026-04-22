@@ -39,7 +39,15 @@
             :to="`/academy/${article.id}`"
             class="card block overflow-hidden p-0 transition-shadow hover:shadow-lg"
           >
-            <img :src="article.cover" :alt="article.title" class="h-48 w-full object-cover" />
+            <img
+              :src="article.cover"
+              :alt="article.title"
+              class="h-48 w-full object-cover"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+              @error="onRemoteImageError"
+            />
             <div class="p-6">
               <h3 class="mb-2 text-lg font-semibold text-gray-900">{{ article.title }}</h3>
               <p class="line-clamp-2 text-sm text-gray-600">
@@ -66,6 +74,7 @@ import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import { getCategories, type Category } from '@/api/product'
 import { getPublishedArticles, type ArticleListItem } from '@/api/article'
+import { onRemoteImageError } from '@/utils/remoteImage'
 
 const currentCategory = ref('all')
 const loading = ref(true)
