@@ -1,0 +1,35 @@
+# 全量 pnpm run build，与 Vercel 根项目/生产同路径；需能访问数据库
+name: 全量构建
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  monorepo:
+    name: 根目录 pnpm run build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 使用 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: 安装依赖
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 全量构建
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::未配置 GitHub 仓库 Secret：DATABASE_URL。见 docs/DEPLOY.md 第六节。"
+            exit 1
+          fi
+          pnpm run build

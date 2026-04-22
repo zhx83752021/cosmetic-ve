@@ -8,6 +8,7 @@
     "build": "pnpm -r --workspace-concurrency=1 run build && node scripts/prepare-deploy.js",
     "build:web": "pnpm --filter @cosmetics/web run build",
     "build:server": "pnpm --filter @cosmetics/server run build",
+    "verify:full": "node scripts/verify-full-build.cjs",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",

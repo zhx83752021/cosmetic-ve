@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import LoginModal from '@/modules/user/components/auth/LoginModal.vue'
-import RegisterModal from '@/modules/user/components/auth/RegisterModal.vue'
+import LoginModal from '@/components/auth/LoginModal.vue'
+import RegisterModal from '@/components/auth/RegisterModal.vue'
 </script>
 
 <style>

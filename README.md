@@ -264,6 +264,8 @@ cosmetics-platform/
 
 ## 🚀 快速部署
 
+- **可复现构建、环境变量与全量 `pnpm run build` 单页**：[docs/DEPLOY.md](./docs/DEPLOY.md)（含本地 `pnpm run verify:full` 与 GitHub 全量工作流说明）
+
 ### ⚠️ 重要提示：前后端分离部署
 
 本项目采用 **Monorepo 架构**，包含前端（`apps/web`）和后端（`apps/server`）两个应用。

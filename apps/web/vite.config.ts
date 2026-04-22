@@ -21,7 +21,11 @@ export default defineConfig({
       dts: 'src/components.d.ts',
       dirs: [
         'src/components/common',
-        'src/modules/user/components',
+        'src/components/layout',
+        'src/components/home',
+        'src/components/icons',
+        'src/components/products',
+        'src/components/auth',
         'src/modules/admin/components',
       ],
     }),
