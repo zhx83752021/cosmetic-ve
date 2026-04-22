@@ -27,6 +27,14 @@ export const errorHandler = (
     })
   }
 
+  // cors 包在拒绝 origin 时会 next(普通 Error)，否则表现为 500「服务器错误」
+  if (err.message?.includes('CORS not allowed for origin:')) {
+    return res.status(403).json({
+      success: false,
+      message: '该来源未在服务端 CORS 白名单中，请在环境变量 CORS_ORIGINS 中配置前端域名',
+    })
+  }
+
   // 处理Prisma错误
   if (err.name === 'PrismaClientKnownRequestError') {
     return res.status(400).json({

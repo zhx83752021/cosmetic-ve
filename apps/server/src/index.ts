@@ -26,6 +26,8 @@ const productionOrigins = [
   'https://www.hi-ultra.com',
   'https://cosmetic-ve.vercel.app',
   'https://cosmetic-ve-git-main-zhx83752021s-projects.vercel.app', // Vercel Git 分支
+  'https://cosmetics.supperai.top',
+  'https://www.cosmetics.supperai.top',
 ]
 // 如果设置了自定义 CORS_ORIGINS，添加到白名单
 if (process.env.CORS_ORIGINS) {
