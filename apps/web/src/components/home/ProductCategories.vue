@@ -3,21 +3,31 @@
     <div class="container">
       <div class="mb-12 text-center">
         <div
-          class="mb-3 inline-block rounded-full bg-gradient-to-r from-accent-lavender/10 to-primary/10 px-6 py-2 text-sm font-semibold text-primary-dark">
-          🌸 Categories
+          class="mb-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-accent-lavender/10 to-primary/10 px-6 py-2 text-sm font-semibold text-primary-dark"
+        >
+          <AdIcon icon="ant-design:partition-outlined" size-class="h-4 w-4" />
+          分类
         </div>
         <h2 class="mb-4 text-4xl font-bold text-text-primary">产品分类</h2>
-        <p class="text-lg text-text-secondary">探索我们的全系列产品</p>
+        <p class="text-lg text-text-secondary">按系列浏览</p>
       </div>
 
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-        <RouterLink v-for="category in activeCategories" :key="category.id" :to="`/products?category=${category.id}`"
-          class="card group cursor-pointer overflow-hidden p-0 transition-transform hover:scale-105">
+        <RouterLink
+          v-for="category in activeCategories"
+          :key="category.id"
+          :to="`/products?category=${category.id}`"
+          class="card group cursor-pointer overflow-hidden p-0 transition-transform hover:scale-105"
+        >
           <div class="relative h-80 overflow-hidden">
-            <img :src="getCategoryImage(category.name)" :alt="category.name"
-              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" />
-            <div class="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-primary-dark/20 to-transparent">
-            </div>
+            <img
+              :src="getCategoryImage(category.name)"
+              :alt="category.name"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-primary-dark/80 via-primary-dark/20 to-transparent"
+            ></div>
             <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
               <h3 class="mb-2 text-2xl font-bold drop-shadow-lg">{{ category.name }}</h3>
               <p class="text-sm opacity-90 drop-shadow-md">{{ getCategoryDesc(category.name) }}</p>
@@ -31,6 +41,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import { getCategories } from '@/api/product'
 
 const backendCategories = ref<any[]>([])

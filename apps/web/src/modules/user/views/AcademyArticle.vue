@@ -21,8 +21,14 @@
           <h1 class="mb-4 text-4xl font-bold text-gray-900">{{ article.title }}</h1>
           <div class="flex flex-wrap items-center gap-6 text-gray-600">
             <span>作者 {{ article.author }}</span>
-            <span>👁️ {{ article.views }} 次浏览</span>
-            <span>👍 {{ article.likes }} 个赞</span>
+            <span class="inline-flex items-center gap-1.5">
+              <AdIcon icon="ant-design:eye-outlined" size-class="h-4 w-4" />
+              {{ article.views }} 次浏览
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <AdIcon icon="ant-design:like-outlined" size-class="h-4 w-4" />
+              {{ article.likes }} 个赞
+            </span>
           </div>
         </header>
 
@@ -43,8 +49,14 @@
         <footer class="mt-12 border-t border-gray-200 pt-8">
           <div class="flex flex-wrap items-center justify-between gap-4">
             <RouterLink to="/academy" class="btn btn-secondary">← 返回列表</RouterLink>
-            <button type="button" class="btn btn-primary" :disabled="likeLoading" @click="onLike">
-              {{ likeLoading ? '…' : `👍 点赞 (${article.likes})` }}
+            <button
+              type="button"
+              class="btn btn-primary inline-flex items-center gap-1.5"
+              :disabled="likeLoading"
+              @click="onLike"
+            >
+              <AdIcon v-if="!likeLoading" icon="ant-design:like-outlined" size-class="h-4 w-4" />
+              {{ likeLoading ? '处理中' : `点赞（${article.likes}）` }}
             </button>
           </div>
         </footer>
@@ -58,6 +70,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import { getArticleById, likeArticle, type Article } from '@/api/article'

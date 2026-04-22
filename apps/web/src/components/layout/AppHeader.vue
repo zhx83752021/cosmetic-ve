@@ -80,25 +80,37 @@
                   to="/user"
                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary"
                 >
-                  <span>👤</span> 用户中心
+                  <span class="shrink-0"
+                    ><AdIcon icon="ant-design:user-outlined" size-class="h-4 w-4"
+                  /></span>
+                  用户中心
                 </RouterLink>
                 <RouterLink
                   to="/user/orders"
                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary"
                 >
-                  <span>📦</span> 我的订单
+                  <span class="shrink-0"
+                    ><AdIcon icon="ant-design:file-text-outlined" size-class="h-4 w-4"
+                  /></span>
+                  我的订单
                 </RouterLink>
                 <RouterLink
                   to="/user/coupons"
                   class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary"
                 >
-                  <span>🎟️</span> 优惠券
+                  <span class="shrink-0"
+                    ><AdIcon icon="ant-design:tag-outlined" size-class="h-4 w-4"
+                  /></span>
+                  优惠券
                 </RouterLink>
                 <button
                   class="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                   @click="handleLogout"
                 >
-                  <span>🚪</span> 退出登录
+                  <span class="shrink-0"
+                    ><AdIcon icon="ant-design:logout-outlined" size-class="h-4 w-4"
+                  /></span>
+                  退出登录
                 </button>
               </div>
             </div>
@@ -123,6 +135,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useCartStore } from '@/stores/cart'
 import { useAuthModalStore } from '@/stores/auth-modal'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import ShoppingCartIcon from '@/components/icons/ShoppingCartIcon.vue'
 import UserIcon from '@/components/icons/UserIcon.vue'

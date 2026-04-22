@@ -74,8 +74,8 @@
           />
         </el-form-item>
         <el-form-item label="分类图标">
-          <el-input v-model="formData.icon" placeholder="请输入emoji图标" maxlength="2" />
-          <div class="form-tip">例如：🧼 💄 💋 🌸</div>
+          <el-input v-model="formData.icon" placeholder="1～2 字简称，可留空" maxlength="2" />
+          <div class="form-tip">用于列表展示，如：护、彩、香</div>
         </el-form-item>
         <el-form-item label="分类图片">
           <el-input v-model="formData.image" placeholder="请输入图片URL" />

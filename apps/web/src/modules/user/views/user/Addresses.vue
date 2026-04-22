@@ -6,7 +6,9 @@
     </div>
 
     <div v-if="addresses.length === 0" class="py-20 text-center text-gray-500">
-      <div class="mb-4 text-4xl">📍</div>
+      <div class="mb-4 flex justify-center text-primary">
+        <AdIcon icon="ant-design:environment-outlined" size-class="h-14 w-14" />
+      </div>
       <p>暂无收货地址</p>
     </div>
 
@@ -147,6 +149,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import type { Address } from '@/types'
 
 const showModal = ref(false)

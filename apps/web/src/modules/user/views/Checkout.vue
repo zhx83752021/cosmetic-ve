@@ -14,10 +14,14 @@
           <!-- 左侧主要内容 -->
           <div class="lg:col-span-2 space-y-6">
             <!-- 收货地址 -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
+            >
               <div class="mb-5 flex items-center justify-between">
-                <h2 class="text-xl font-bold text-gray-900 flex items-center">
-                  <span class="mr-2">📍</span>
+                <h2 class="flex items-center text-xl font-bold text-gray-900">
+                  <span class="mr-2 text-primary">
+                    <AdIcon icon="ant-design:environment-outlined" size-class="h-5 w-5" />
+                  </span>
                   收货地址
                 </h2>
                 <button
@@ -29,12 +33,11 @@
               </div>
 
               <div v-if="addresses.length === 0" class="py-12 text-center">
-                <div class="text-gray-400 text-6xl mb-4">📦</div>
+                <div class="mb-4 flex justify-center text-gray-300">
+                  <AdIcon icon="ant-design:inbox-outlined" size-class="h-16 w-16" />
+                </div>
                 <p class="text-gray-500 mb-4">暂无收货地址</p>
-                <button
-                  class="btn btn-primary btn-sm"
-                  @click="showAddressModal = true"
-                >
+                <button class="btn btn-primary btn-sm" @click="showAddressModal = true">
                   立即添加
                 </button>
               </div>
@@ -47,7 +50,7 @@
                     'cursor-pointer rounded-xl border-2 p-5 transition-all hover:shadow-sm',
                     selectedAddress?.id === address.id
                       ? 'border-primary bg-primary/5 shadow-sm'
-                      : 'border-gray-200 hover:border-primary/50'
+                      : 'border-gray-200 hover:border-primary/50',
                   ]"
                   @click="selectedAddress = address"
                 >
@@ -63,11 +66,8 @@
                       >
                         默认
                       </span>
-                      <span
-                        v-if="selectedAddress?.id === address.id"
-                        class="text-primary text-xl"
-                      >
-                        ✓
+                      <span v-if="selectedAddress?.id === address.id" class="text-primary">
+                        <AdIcon icon="ant-design:check-outlined" size-class="h-5 w-5" />
                       </span>
                     </div>
                   </div>
@@ -80,9 +80,13 @@
             </div>
 
             <!-- 商品清单 -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-              <h2 class="mb-5 text-xl font-bold text-gray-900 flex items-center">
-                <span class="mr-2">🛍️</span>
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
+            >
+              <h2 class="mb-5 flex items-center text-xl font-bold text-gray-900">
+                <span class="mr-2 text-primary">
+                  <AdIcon icon="ant-design:appstore-outlined" size-class="h-5 w-5" />
+                </span>
                 商品清单
               </h2>
               <div class="divide-y divide-gray-100">
@@ -113,9 +117,13 @@
             </div>
 
             <!-- 支付方式 -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-              <h2 class="mb-5 text-xl font-bold text-gray-900 flex items-center">
-                <span class="mr-2">💳</span>
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
+            >
+              <h2 class="mb-5 flex items-center text-xl font-bold text-gray-900">
+                <span class="mr-2 text-primary">
+                  <AdIcon icon="ant-design:wallet-outlined" size-class="h-5 w-5" />
+                </span>
                 支付方式
               </h2>
               <div class="space-y-3">
@@ -135,22 +143,25 @@
                     :value="method.value"
                     class="mr-3 w-4 h-4 text-primary"
                   />
-                  <span class="text-3xl mr-3">{{ method.icon }}</span>
+                  <span class="mr-3 text-2xl text-primary">
+                    <AdIcon :icon="method.icon" size-class="h-8 w-8" />
+                  </span>
                   <span class="font-medium text-gray-900">{{ method.label }}</span>
-                  <span
-                    v-if="selectedPayment === method.value"
-                    class="ml-auto text-primary text-xl"
-                  >
-                    ✓
+                  <span v-if="selectedPayment === method.value" class="ml-auto text-primary">
+                    <AdIcon icon="ant-design:check-outlined" size-class="h-5 w-5" />
                   </span>
                 </label>
               </div>
             </div>
 
             <!-- 订单备注 -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-              <h2 class="mb-5 text-xl font-bold text-gray-900 flex items-center">
-                <span class="mr-2">📝</span>
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
+            >
+              <h2 class="mb-5 flex items-center text-xl font-bold text-gray-900">
+                <span class="mr-2 text-primary">
+                  <AdIcon icon="ant-design:edit-outlined" size-class="h-5 w-5" />
+                </span>
                 订单备注
               </h2>
               <textarea
@@ -165,8 +176,10 @@
           <!-- 右侧订单摘要 -->
           <div class="lg:col-span-1">
             <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 sticky top-24">
-              <h2 class="mb-6 text-xl font-bold text-gray-900 flex items-center">
-                <span class="mr-2">💰</span>
+              <h2 class="mb-6 flex items-center text-xl font-bold text-gray-900">
+                <span class="mr-2 text-primary">
+                  <AdIcon icon="ant-design:account-book-outlined" size-class="h-5 w-5" />
+                </span>
                 订单金额
               </h2>
               <div class="space-y-4">
@@ -176,20 +189,29 @@
                 </div>
                 <div class="flex justify-between text-gray-600">
                   <span>运费</span>
-                  <span class="font-medium">{{ shippingFee === 0 ? '免运费' : `¥${shippingFee.toFixed(2)}` }}</span>
+                  <span class="font-medium">{{
+                    shippingFee === 0 ? '免运费' : `¥${shippingFee.toFixed(2)}`
+                  }}</span>
                 </div>
-                <div v-if="cartStore.selectedTotalPrice >= 299" class="text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
-                  🎉 已满¥299，享受免运费！
+                <div
+                  v-if="cartStore.selectedTotalPrice >= 299"
+                  class="flex items-center gap-1.5 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-600"
+                >
+                  <AdIcon icon="ant-design:truck-outlined" size-class="h-4 w-4" />
+                  已满¥299，本单免运费
                 </div>
-                <div v-else class="text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-                  💡 再购¥{{ (299 - cartStore.selectedTotalPrice).toFixed(2) }} 即可免运费
+                <div
+                  v-else
+                  class="flex items-center gap-1.5 rounded-lg bg-gray-50 px-3 py-2 text-sm text-gray-500"
+                >
+                  <AdIcon icon="ant-design:info-circle-outlined" size-class="h-4 w-4" />
+                  再购¥{{ (299 - cartStore.selectedTotalPrice).toFixed(2) }} 可免运费
                 </div>
                 <div class="flex justify-between border-t-2 border-gray-200 pt-4 text-xl font-bold">
                   <span class="text-gray-900">应付总额</span>
                   <span class="text-primary text-2xl">¥{{ totalAmount.toFixed(2) }}</span>
                 </div>
               </div>
-
 
               <!-- 提交订单按钮 -->
               <div class="mt-6 space-y-3">
@@ -222,6 +244,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import type { Address } from '@/types'
@@ -250,9 +273,9 @@ const showAddressModal = ref(false)
 
 // 支付方式
 const paymentMethods = [
-  { value: 'wechat', label: '微信支付', icon: '💚' },
-  { value: 'alipay', label: '支付宝', icon: '💙' },
-  { value: 'unionpay', label: '银联支付', icon: '🏦' },
+  { value: 'wechat', label: '微信支付', icon: 'ant-design:wechat-outlined' },
+  { value: 'alipay', label: '支付宝', icon: 'ant-design:alipay-outlined' },
+  { value: 'unionpay', label: '银联支付', icon: 'ant-design:bank-outlined' },
 ]
 
 const selectedPayment = ref('wechat')

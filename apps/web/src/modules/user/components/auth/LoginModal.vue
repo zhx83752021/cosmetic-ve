@@ -15,21 +15,23 @@
           <div class="card overflow-hidden shadow-2xl">
             <!-- 关闭按钮 -->
             <button
+              type="button"
               class="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 text-gray-600 transition-all hover:bg-white hover:text-gray-900"
+              aria-label="关闭"
               @click="handleClose"
             >
-              ✕
+              <AdIcon icon="ant-design:close-outlined" size-class="h-5 w-5" />
             </button>
 
             <!-- 头部装饰 -->
             <div class="bg-gradient-to-r from-primary to-primary-dark p-8 text-center text-white">
               <div
-                class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm"
+                class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white"
               >
-                <span class="text-3xl">👋</span>
+                <AdIcon icon="ant-design:login-outlined" size-class="h-9 w-9" />
               </div>
-              <h2 class="text-2xl font-bold">欢迎回来</h2>
-              <p class="mt-2 text-sm opacity-90">登录您的账户，开启美丽之旅</p>
+              <h2 class="text-2xl font-bold">登录</h2>
+              <p class="mt-2 text-sm opacity-90">使用手机号与密码</p>
             </div>
 
             <!-- 登录表单 -->
@@ -39,7 +41,9 @@
                 <div class="mb-4">
                   <label class="mb-2 block text-sm font-semibold text-gray-700">
                     <span class="flex items-center gap-2">
-                      <span>📱</span>
+                      <span class="text-primary"
+                        ><AdIcon icon="ant-design:mobile-outlined" size-class="h-4 w-4"
+                      /></span>
                       手机号
                     </span>
                   </label>
@@ -57,7 +61,9 @@
                 <div class="mb-4">
                   <label class="mb-2 block text-sm font-semibold text-gray-700">
                     <span class="flex items-center gap-2">
-                      <span>🔒</span>
+                      <span class="text-primary"
+                        ><AdIcon icon="ant-design:lock-outlined" size-class="h-4 w-4"
+                      /></span>
                       密码
                     </span>
                   </label>
@@ -71,10 +77,19 @@
                     />
                     <button
                       type="button"
-                      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                      :aria-pressed="showPassword"
+                      aria-label="显示或隐藏密码"
                       @click="showPassword = !showPassword"
                     >
-                      {{ showPassword ? '🙈' : '👁️' }}
+                      <AdIcon
+                        :icon="
+                          showPassword
+                            ? 'ant-design:eye-invisible-outlined'
+                            : 'ant-design:eye-outlined'
+                        "
+                        size-class="h-5 w-5"
+                      />
                     </button>
                   </div>
                 </div>
@@ -153,6 +168,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'

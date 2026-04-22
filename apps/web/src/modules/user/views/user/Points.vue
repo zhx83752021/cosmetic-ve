@@ -20,28 +20,36 @@
       <h3 class="mb-4 text-xl font-bold">积分规则</h3>
       <div class="grid gap-4 md:grid-cols-2">
         <div class="flex items-start gap-3 rounded-lg bg-neutral-gray p-4">
-          <div class="text-2xl">🛒</div>
+          <span class="text-primary"
+            ><AdIcon icon="ant-design:shopping-cart-outlined" size-class="h-6 w-6"
+          /></span>
           <div>
             <div class="font-semibold">购物赚积分</div>
             <div class="text-sm text-gray-600">每消费1元获得1积分</div>
           </div>
         </div>
         <div class="flex items-start gap-3 rounded-lg bg-neutral-gray p-4">
-          <div class="text-2xl">✍️</div>
+          <span class="text-primary"
+            ><AdIcon icon="ant-design:form-outlined" size-class="h-6 w-6"
+          /></span>
           <div>
             <div class="font-semibold">评价赚积分</div>
             <div class="text-sm text-gray-600">每次评价获得20积分</div>
           </div>
         </div>
         <div class="flex items-start gap-3 rounded-lg bg-neutral-gray p-4">
-          <div class="text-2xl">📅</div>
+          <span class="text-primary"
+            ><AdIcon icon="ant-design:calendar-outlined" size-class="h-6 w-6"
+          /></span>
           <div>
             <div class="font-semibold">每日签到</div>
             <div class="text-sm text-gray-600">连续签到最高10积分/天</div>
           </div>
         </div>
         <div class="flex items-start gap-3 rounded-lg bg-neutral-gray p-4">
-          <div class="text-2xl">🎁</div>
+          <span class="text-primary"
+            ><AdIcon icon="ant-design:gift-outlined" size-class="h-6 w-6"
+          /></span>
           <div>
             <div class="font-semibold">积分兑换</div>
             <div class="text-sm text-gray-600">100积分可抵扣1元</div>
@@ -62,7 +70,9 @@
       </div>
 
       <div v-if="filteredRecords.length === 0" class="py-20 text-center text-gray-500">
-        <div class="mb-4 text-4xl">⭐</div>
+        <div class="mb-4 flex justify-center text-primary">
+          <AdIcon icon="ant-design:file-search-outlined" size-class="h-14 w-14" />
+        </div>
         <p>暂无积分记录</p>
       </div>
 
@@ -74,10 +84,12 @@
         >
           <div class="flex items-center gap-4">
             <div
-              class="flex h-12 w-12 items-center justify-center rounded-full text-2xl"
-              :class="record.type === 'income' ? 'bg-green-100' : 'bg-red-100'"
+              class="flex h-12 w-12 items-center justify-center rounded-full"
+              :class="
+                record.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+              "
             >
-              {{ record.icon }}
+              <AdIcon :icon="record.icon" size-class="h-6 w-6" />
             </div>
             <div>
               <div class="font-semibold text-gray-900">{{ record.description }}</div>
@@ -98,6 +110,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 
 const userPoints = ref(2580)
 const expiringPoints = ref(120)
@@ -118,7 +131,7 @@ const records = ref<PointRecord[]>([
     type: 'income',
     points: 398,
     description: '购物获得积分',
-    icon: '🛒',
+    icon: 'ant-design:shopping-cart-outlined',
     createdAt: new Date().toISOString(),
   },
   {
@@ -126,7 +139,7 @@ const records = ref<PointRecord[]>([
     type: 'income',
     points: 20,
     description: '评价订单',
-    icon: '✍️',
+    icon: 'ant-design:form-outlined',
     createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -134,7 +147,7 @@ const records = ref<PointRecord[]>([
     type: 'income',
     points: 10,
     description: '每日签到',
-    icon: '📅',
+    icon: 'ant-design:calendar-outlined',
     createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -142,7 +155,7 @@ const records = ref<PointRecord[]>([
     type: 'expense',
     points: 100,
     description: '积分抵扣',
-    icon: '💰',
+    icon: 'ant-design:transaction-outlined',
     createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -150,7 +163,7 @@ const records = ref<PointRecord[]>([
     type: 'income',
     points: 568,
     description: '购物获得积分',
-    icon: '🛒',
+    icon: 'ant-design:shopping-cart-outlined',
     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ])

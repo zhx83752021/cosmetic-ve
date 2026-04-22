@@ -22,7 +22,9 @@
 
     <!-- 订单列表 -->
     <div v-if="filteredOrders.length === 0" class="py-20 text-center text-gray-500">
-      <div class="mb-4 text-4xl">📦</div>
+      <div class="mb-4 flex justify-center text-primary">
+        <AdIcon icon="ant-design:inbox-outlined" size-class="h-14 w-14" />
+      </div>
       <p>暂无订单</p>
     </div>
 
@@ -107,6 +109,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import type { Order, OrderStatus } from '@/types'
 
 const currentStatus = ref<string>('all')

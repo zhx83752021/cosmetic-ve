@@ -12,10 +12,10 @@
           <div
             class="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm"
           >
-            <UserIcon class="h-10 w-10" />
+            <AdIcon icon="ant-design:login-outlined" size-class="h-10 w-10" />
           </div>
-          <h1 class="text-3xl font-bold">欢迎回来</h1>
-          <p class="mt-2 text-sm opacity-90">登录您的账户，开启美丽之旅</p>
+          <h1 class="text-3xl font-bold">登录</h1>
+          <p class="mt-2 text-sm opacity-90">使用手机号与密码</p>
         </div>
 
         <!-- 登录表单 -->
@@ -25,7 +25,9 @@
             <div class="mb-6">
               <label class="mb-2 block text-sm font-semibold text-gray-700">
                 <span class="flex items-center gap-2">
-                  <span>📱</span>
+                  <span class="text-primary"
+                    ><AdIcon icon="ant-design:mobile-outlined" size-class="h-4 w-4"
+                  /></span>
                   手机号
                 </span>
               </label>
@@ -43,7 +45,9 @@
             <div class="mb-6">
               <label class="mb-2 block text-sm font-semibold text-gray-700">
                 <span class="flex items-center gap-2">
-                  <span>🔒</span>
+                  <span class="text-primary"
+                    ><AdIcon icon="ant-design:lock-outlined" size-class="h-4 w-4"
+                  /></span>
                   密码
                 </span>
               </label>
@@ -57,10 +61,17 @@
                 />
                 <button
                   type="button"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  :aria-pressed="showPassword"
+                  aria-label="显示或隐藏密码"
                   @click="showPassword = !showPassword"
                 >
-                  {{ showPassword ? '🙈' : '👁️' }}
+                  <AdIcon
+                    :icon="
+                      showPassword ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
+                    "
+                    size-class="h-5 w-5"
+                  />
                 </button>
               </div>
             </div>
@@ -150,9 +161,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { login as loginApi, mapAuthUserToUserInfo } from '@/api/auth'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
-import UserIcon from '@/components/icons/UserIcon.vue'
 
 const router = useRouter()
 const route = useRoute()

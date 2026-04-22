@@ -3,12 +3,13 @@
     <div class="container">
       <div class="mb-12 text-center">
         <div
-          class="mb-3 inline-block rounded-full bg-gradient-to-r from-primary/10 to-accent-pink/10 px-6 py-2 text-sm font-semibold text-primary"
+          class="mb-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary/10 to-accent-pink/10 px-6 py-2 text-sm font-semibold text-primary"
         >
-          ✨ Featured Products
+          <AdIcon icon="ant-design:star-outlined" size-class="h-4 w-4" />
+          精选
         </div>
         <h2 class="mb-4 text-4xl font-bold text-text-primary">精选推荐</h2>
-        <p class="text-lg text-text-secondary">为您精心挑选的明星产品</p>
+        <p class="text-lg text-text-secondary">热销与上架新品</p>
       </div>
 
       <p v-if="loading" class="py-12 text-center text-text-secondary">加载中…</p>
@@ -97,6 +98,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import StarIcon from '@/components/icons/StarIcon.vue'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import { getProducts, type Product as ApiProduct } from '@/api/product'
 import { onRemoteImageError, REMOTE_IMAGE_FALLBACK } from '@/utils/remoteImage'
 

@@ -10,12 +10,12 @@
         <!-- 头部装饰 -->
         <div class="bg-gradient-to-r from-accent-pink to-primary p-8 text-center text-white">
           <div
-            class="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm"
+            class="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white"
           >
-            <span class="text-4xl">✨</span>
+            <AdIcon icon="ant-design:user-add-outlined" size-class="h-10 w-10" />
           </div>
-          <h1 class="text-3xl font-bold">加入我们</h1>
-          <p class="mt-2 text-sm opacity-90">注册账户，开启您的美丽之旅</p>
+          <h1 class="text-3xl font-bold">注册</h1>
+          <p class="mt-2 text-sm opacity-90">手机号 + 密码，约一分钟</p>
         </div>
 
         <!-- 注册表单 -->
@@ -25,7 +25,9 @@
             <div class="mb-5">
               <label class="mb-2 block text-sm font-semibold text-gray-700">
                 <span class="flex items-center gap-2">
-                  <span>📱</span>
+                  <span class="text-primary"
+                    ><AdIcon icon="ant-design:mobile-outlined" size-class="h-4 w-4"
+                  /></span>
                   手机号
                 </span>
               </label>
@@ -43,7 +45,9 @@
             <div class="mb-5">
               <label class="mb-2 block text-sm font-semibold text-gray-700">
                 <span class="flex items-center gap-2">
-                  <span>🔒</span>
+                  <span class="text-primary"
+                    ><AdIcon icon="ant-design:lock-outlined" size-class="h-4 w-4"
+                  /></span>
                   密码
                 </span>
               </label>
@@ -58,10 +62,17 @@
                 />
                 <button
                   type="button"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  :aria-pressed="showPassword"
+                  aria-label="显示或隐藏密码"
                   @click="showPassword = !showPassword"
                 >
-                  {{ showPassword ? '🙈' : '👁️' }}
+                  <AdIcon
+                    :icon="
+                      showPassword ? 'ant-design:eye-invisible-outlined' : 'ant-design:eye-outlined'
+                    "
+                    size-class="h-5 w-5"
+                  />
                 </button>
               </div>
               <div class="mt-2 flex gap-1">
@@ -87,7 +98,9 @@
             <div class="mb-5">
               <label class="mb-2 block text-sm font-semibold text-gray-700">
                 <span class="flex items-center gap-2">
-                  <span>🔐</span>
+                  <span class="text-primary"
+                    ><AdIcon icon="ant-design:key-outlined" size-class="h-4 w-4"
+                  /></span>
                   确认密码
                 </span>
               </label>
@@ -101,10 +114,19 @@
                 />
                 <button
                   type="button"
-                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  :aria-pressed="showConfirmPassword"
+                  aria-label="显示或隐藏确认密码"
                   @click="showConfirmPassword = !showConfirmPassword"
                 >
-                  {{ showConfirmPassword ? '🙈' : '👁️' }}
+                  <AdIcon
+                    :icon="
+                      showConfirmPassword
+                        ? 'ant-design:eye-invisible-outlined'
+                        : 'ant-design:eye-outlined'
+                    "
+                    size-class="h-5 w-5"
+                  />
                 </button>
               </div>
               <p
@@ -114,10 +136,6 @@
                 两次输入的密码不一致
               </p>
             </div>
-
-            <p class="mb-4 rounded-lg bg-neutral-gray px-3 py-2 text-xs text-gray-600">
-              短信验证码未接入，注册仅需手机号 + 密码。
-            </p>
 
             <!-- 服务条款 -->
             <div class="mb-6">
@@ -187,16 +205,22 @@
 
       <!-- 注册优势 -->
       <div class="mt-6 grid grid-cols-3 gap-3 text-center text-xs text-gray-600">
-        <div class="rounded-lg bg-white p-3 shadow-sm">
-          <div class="mb-1 text-2xl">🎁</div>
+        <div class="flex flex-col items-center rounded-lg bg-white p-3 shadow-sm">
+          <div class="mb-1 text-primary">
+            <AdIcon icon="ant-design:gift-outlined" size-class="h-7 w-7" />
+          </div>
           <div>新人礼包</div>
         </div>
-        <div class="rounded-lg bg-white p-3 shadow-sm">
-          <div class="mb-1 text-2xl">💰</div>
+        <div class="flex flex-col items-center rounded-lg bg-white p-3 shadow-sm">
+          <div class="mb-1 text-primary">
+            <AdIcon icon="ant-design:transaction-outlined" size-class="h-7 w-7" />
+          </div>
           <div>积分奖励</div>
         </div>
-        <div class="rounded-lg bg-white p-3 shadow-sm">
-          <div class="mb-1 text-2xl">🎉</div>
+        <div class="flex flex-col items-center rounded-lg bg-white p-3 shadow-sm">
+          <div class="mb-1 text-primary">
+            <AdIcon icon="ant-design:percentage-outlined" size-class="h-7 w-7" />
+          </div>
           <div>专属优惠</div>
         </div>
       </div>
@@ -212,6 +236,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { register as registerApi, mapAuthUserToUserInfo } from '@/api/auth'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 

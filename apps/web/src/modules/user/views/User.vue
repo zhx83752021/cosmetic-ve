@@ -17,8 +17,8 @@
                     alt="用户头像"
                     class="h-full w-full object-cover"
                   />
-                  <div v-else class="flex h-full w-full items-center justify-center text-3xl text-primary">
-                    👤
+                  <div v-else class="flex h-full w-full items-center justify-center text-primary">
+                    <AdIcon icon="ant-design:user-outlined" size-class="h-10 w-10" />
                   </div>
                 </div>
                 <h3 class="font-semibold text-gray-900">
@@ -35,9 +35,13 @@
                   :to="item.path"
                   class="flex items-center gap-3 rounded-lg px-4 py-3 transition-colors"
                   active-class="bg-primary text-white"
-                  :class="$route.path === item.path ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'"
+                  :class="
+                    $route.path === item.path
+                      ? 'bg-primary text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  "
                 >
-                  <span class="text-xl">{{ item.icon }}</span>
+                  <AdIcon :icon="item.icon" size-class="h-5 w-5" />
                   <span>{{ item.label }}</span>
                 </RouterLink>
               </nav>
@@ -58,16 +62,17 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 
 const userStore = useUserStore()
 
 const menuItems = [
-  { path: '/user/profile', label: '个人信息', icon: '👤' },
-  { path: '/user/orders', label: '我的订单', icon: '📦' },
-  { path: '/user/addresses', label: '收货地址', icon: '📍' },
-  { path: '/user/coupons', label: '优惠券', icon: '🎫' },
-  { path: '/user/points', label: '我的积分', icon: '⭐' },
-]
+  { path: '/user/profile', label: '个人信息', icon: 'ant-design:user-outlined' },
+  { path: '/user/orders', label: '我的订单', icon: 'ant-design:file-text-outlined' },
+  { path: '/user/addresses', label: '收货地址', icon: 'ant-design:environment-outlined' },
+  { path: '/user/coupons', label: '优惠券', icon: 'ant-design:tag-outlined' },
+  { path: '/user/points', label: '我的积分', icon: 'ant-design:star-outlined' },
+] as const
 </script>

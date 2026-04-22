@@ -34,7 +34,9 @@
               v-if="productResults.length === 0 && articleResults.length === 0"
               class="py-20 text-center text-gray-500"
             >
-              <div class="mb-4 text-6xl">🔍</div>
+              <div class="mb-4 flex justify-center text-primary">
+                <AdIcon icon="ant-design:search-outlined" size-class="h-16 w-16" />
+              </div>
               <p class="text-xl">没有找到相关内容</p>
               <p class="mt-2">试试其他关键词吧</p>
             </div>
@@ -115,6 +117,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import { getProducts, type Product } from '@/api/product'

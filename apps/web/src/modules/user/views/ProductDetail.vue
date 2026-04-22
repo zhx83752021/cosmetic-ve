@@ -160,17 +160,31 @@
 
         <!-- 相关推荐 -->
         <div class="mt-20 border-t pt-16">
-          <h3 class="mb-8 text-2xl font-bold text-gray-900 flex items-center gap-3">
-            <span class="text-primary">✨</span> 猜你喜欢
+          <h3 class="mb-8 flex items-center gap-2 text-2xl font-bold text-gray-900">
+            <span class="text-primary">
+              <AdIcon icon="ant-design:like-outlined" size-class="h-7 w-7" />
+            </span>
+            猜你喜欢
           </h3>
           <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div v-for="related in relatedProducts" :key="related.id" 
+            <div
+              v-for="related in relatedProducts"
+              :key="related.id"
               class="group cursor-pointer rounded-card bg-neutral-cream/20 p-4 transition-all hover:bg-white hover:shadow-xl"
-              @click="goToRelated(related.id)">
+              @click="goToRelated(related.id)"
+            >
               <div class="mb-4 overflow-hidden rounded-lg">
-                <img :src="related.images[0]" :alt="related.name" class="h-48 w-full object-cover transition-transform group-hover:scale-110" />
+                <img
+                  :src="related.images[0]"
+                  :alt="related.name"
+                  class="h-48 w-full object-cover transition-transform group-hover:scale-110"
+                />
               </div>
-              <h4 class="mb-1 font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-1">{{ related.name }}</h4>
+              <h4
+                class="mb-1 font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-1"
+              >
+                {{ related.name }}
+              </h4>
               <p class="mb-2 text-sm text-gray-500 line-clamp-1">{{ related.subTitle }}</p>
               <div class="flex items-center justify-between">
                 <span class="font-bold text-primary">¥{{ related.price }}</span>
@@ -190,6 +204,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
+import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
 import StarIcon from '@/components/icons/StarIcon.vue'
@@ -222,14 +237,16 @@ const initProductData = async (productId: any) => {
       const data = res.data as any
       product.value = data
       currentImage.value = data.images && data.images.length > 0 ? data.images[0] : ''
-      
+
       if (data.skus && data.skus.length > 0) {
         selectedSku.value = data.skus[0]
       }
 
       const relRes = await getProducts({ categoryId: data.categoryId, pageSize: 5 })
       if (relRes && relRes.data) {
-        relatedProducts.value = ((relRes.data as any).items || []).filter((p: any) => p.id !== Number(productId)).slice(0, 4)
+        relatedProducts.value = ((relRes.data as any).items || [])
+          .filter((p: any) => p.id !== Number(productId))
+          .slice(0, 4)
       }
     }
   } catch (error) {
@@ -241,12 +258,15 @@ onMounted(() => {
   initProductData(route.params.id)
 })
 
-watch(() => route.params.id, (newId) => {
-  if (newId) {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    initProductData(newId)
+watch(
+  () => route.params.id,
+  newId => {
+    if (newId) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      initProductData(newId)
+    }
   }
-})
+)
 
 const goToRelated = (id: number) => {
   router.push(`/product/${id}`)
