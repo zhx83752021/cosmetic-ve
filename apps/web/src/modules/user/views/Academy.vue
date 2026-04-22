@@ -2,12 +2,13 @@
   <div class="academy-page min-h-screen bg-neutral-gray pt-20">
     <AppHeader />
 
-    <section class="border-b border-gray-200/80 bg-neutral-cream py-12">
-      <div class="container">
-        <h1 class="mb-2 text-3xl font-bold text-text-primary md:text-4xl">美妆学院</h1>
-        <p class="text-lg text-text-secondary">护理与妆容实用内容</p>
-      </div>
-    </section>
+    <PageHeroWithImage
+      title="美妆学院"
+      subtitle="护理与妆容实用内容"
+      image-src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=1200&q=80&auto=format&fit=crop"
+      image-alt="化妆与护肤产品静物"
+      layout="split"
+    />
 
     <section class="py-12">
       <div class="container">
@@ -72,6 +73,7 @@
 import { ref, watch, onMounted } from 'vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
+import PageHeroWithImage from '@/components/layout/PageHeroWithImage.vue'
 import { getCategories, type Category } from '@/api/product'
 import { getPublishedArticles, type ArticleListItem } from '@/api/article'
 import { onRemoteImageError } from '@/utils/remoteImage'

@@ -3,13 +3,13 @@
     <AppHeader />
 
     <main>
-      <!-- Hero Section -->
-      <section class="border-b border-gray-200/80 bg-neutral-cream py-16 md:py-20">
-        <div class="container text-center">
-          <h1 class="mb-3 text-4xl font-bold text-text-primary md:text-5xl">雅妆品牌故事</h1>
-          <p class="text-lg text-text-secondary md:text-xl">品牌起源与产品理念</p>
-        </div>
-      </section>
+      <PageHeroWithImage
+        title="雅妆品牌故事"
+        subtitle="品牌起源与产品理念"
+        image-src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=80&auto=format&fit=crop"
+        image-alt="雅妆品牌美妆产品"
+        layout="stack"
+      />
 
       <!-- Brand Story -->
       <section class="py-16">
@@ -64,6 +64,7 @@
 import { ref } from 'vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
+import PageHeroWithImage from '@/components/layout/PageHeroWithImage.vue'
 
 const milestones = ref([
   {

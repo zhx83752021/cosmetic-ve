@@ -2,14 +2,13 @@
   <div class="service-page min-h-screen bg-gradient-to-b from-neutral-cream to-white pt-20">
     <AppHeader />
 
-    <section class="border-b border-gray-200/80 bg-neutral-cream py-16 md:py-20">
-      <div class="container">
-        <div class="mx-auto max-w-3xl text-center">
-          <h1 class="mb-3 text-4xl font-bold text-text-primary md:text-5xl">客户服务中心</h1>
-          <p class="text-lg text-text-secondary md:text-xl">电话、在线与邮件渠道见下方</p>
-        </div>
-      </div>
-    </section>
+    <PageHeroWithImage
+      title="客户服务中心"
+      subtitle="电话、在线与邮件渠道见下方"
+      image-src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1200&q=80&auto=format&fit=crop"
+      image-alt="产品与咨询服务"
+      layout="split"
+    />
 
     <section class="py-16">
       <div class="container max-w-6xl">
@@ -192,6 +191,7 @@ import { ref } from 'vue'
 import AdIcon from '@/components/icons/AdIcon.vue'
 import AppHeader from '@/components/layout/AppHeader.vue'
 import AppFooter from '@/components/layout/AppFooter.vue'
+import PageHeroWithImage from '@/components/layout/PageHeroWithImage.vue'
 
 const openFaqIndex = ref<number | null>(null)
 
